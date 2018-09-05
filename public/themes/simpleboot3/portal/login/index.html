@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_n9qihys0sdc.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>员工端 登录</title>
+</head>
+<body>
+<div class="login_top">
+
+        <div class="img_box">
+            <img src="__TMPL__/public/assets/imgs/fiocn@2x.png" alt="">
+        </div>
+        <div class="login_title">帮换宝</div>
+        <div>大型环保交易平台</div>
+</div>
+<div class="login_box">
+    <div class="login_item">
+       <span class="iconfont icon-denglu"></span>
+        <input type="text" placeholder="帮换宝账号" class='zh'>
+    </div>
+    <div class="login_item">
+        <span class="iconfont icon-mimasuo"></span>
+        <input type="password" placeholder="帮换宝登录密码" class="pwd">
+    </div>
+</div>
+<div class=" btn add_address_btn" >登录</div>
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+</body>
+<script  type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script  type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type='text/javascript'>
+	$(function(){
+		$('.btn').click(function(){
+		    var zh=$('.zh').val();
+		    var pwd=$('.pwd').val();
+            if(zh==""){
+                toast('账号不能为空')
+            }else if(pwd == ''){
+                toast('密码不能为空')
+            }else{
+                $.ajax({
+                    type:"POST",
+                    url:"{:url('Login/login_post')}",
+                    data:{
+                        "user_login":zh,
+                        "password":pwd,
+                    },
+                    success:function (data) {
+                        if(data.code == 1){
+                            toast(data.msg);
+                            setTimeout(function () {
+                                location.href = "{:url('Mine/index')}";
+                            },2000)
+                        }else{
+                            toast(data.msg)
+                        }
+                    }
+                })
+            }
+		})
+	})
+</script>
+</html>

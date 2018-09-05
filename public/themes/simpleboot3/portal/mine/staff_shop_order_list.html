@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_s2v4ig7y3k9.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>员工端商城订单</title>
+    <style>
+      body{
+          padding:1rem  0 0 0;
+      }
+    </style>
+</head>
+<body>
+<div class="order_top">
+    <a class="order_top_cell <php>if($order_type == 4){echo 'activity_order';}</php>" href="{:url('Mine/shop_order_list',array('order_type'=>4))}">待接受</a>
+    <a class="order_top_cell <php>if($order_type == 1){echo 'activity_order';}</php>" href="{:url('Mine/shop_order_list',array('order_type'=>1))}">待配送</a>
+    <a class="order_top_cell <php>if($order_type == 2){echo 'activity_order';}</php>" href="{:url('Mine/shop_order_list',array('order_type'=>2))}">配送中</a>
+    <a class="order_top_cell <php>if($order_type == 3){echo 'activity_order';}</php>" href="{:url('Mine/shop_order_list',array('order_type'=>3))}">已完成</a>
+</div>
+<div class="staff_orderitem">
+    <volist name="data" id="vo">
+        <a class="order_item">
+            <div class="order_item_centent">
+                <div class="order_item_centent_left"><img src="{:cmf_get_image_url($vo.detail.goods_thumb)}" alt=""></div>
+                <div class="order_item_centent_right">
+                    <div class="staff_titlebox">
+                        <div class="order_title">{$vo.detail.goods_name}</div>
+                        <if condition="$order_type eq 1">
+                        <!--待配送-->
+                        <div class="order_item_fri_txt">待配送</div>
+                        <elseif condition="$order_type eq 2">
+                        <!--配送中-->
+                        <div class="order_item_fri_txt">配送中</div>
+                        <elseif condition="$order_type eq 3">
+                        <!--已完成-->
+                        <div class="order_item_fri_txt">已完成</div>
+                        <else />
+                        <!--待接受-->
+                        <div class="order_item_fri_txt">待接受</div>
+                        </if>
+                    </div>
+
+                    <div class="attr staff_attr">{$vo.detail.attvalue_names}</div>
+                    <div class="staff_num">数量：{$vo.detail.goods_num}</div>
+                </div>
+            </div>
+            <div class="staff_bottom_box">
+                <div>
+                    <div class="staff_address">
+                        <div>{$vo.sh_village} {$vo.sh_detail_address}</div>
+                        <div class="items_name"> <span class="comfirm_name">{$vo.sh_name}</span><span>{$vo.sh_mobile}</span></div>
+                    </div>
+                </div>
+                <if condition="$order_type eq 1">
+                    <!--待配送-->
+                    <div class="cancel go_order staff_btn" id="peisong" data-id="{$vo.id}">开始配送</div>
+                <elseif condition="$order_type eq 2">
+                    <!--配送中-->
+                    <div class="cancel go_order staff_btn" id="wancheng" data-id="{$vo.id}">确认完成</div>
+                <elseif condition="$order_type eq 3">
+                    <!--已完成-->
+                <else />
+                    <!--待接受-->
+                    <div class="cancel go_order staff_btn" id="jiedan" data-id="{$vo.id}">接单</div>
+                </if>
+            </div>
+        </a>
+    </volist>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script>
+    //接单
+    $('#jiedan').click(function () {
+        var id = $(this).attr('data-id');
+        $.ajax({
+            type:"POST",
+            url:"{:url('Shop/jiedan')}",
+            data:{
+                "id":id,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    location.href = "{:url('Mine/shop_order_list',array('order_type'=>1))}";
+                }
+            }
+        })
+    })
+
+    //配送
+    $('#peisong').click(function () {
+        var id = $(this).attr('data-id');
+        $.ajax({
+            type:"POST",
+            url:"{:url('Shop/peisong')}",
+            data:{
+                "id":id,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    location.href = "{:url('Mine/shop_order_list',array('order_type'=>2))}";
+                }
+            }
+        })
+    })
+
+    //完成
+    $('#wancheng').click(function () {
+        var id = $(this).attr('data-id');
+        $.ajax({
+            type:"POST",
+            url:"{:url('Shop/wancheng')}",
+            data:{
+                "id":id,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    location.href = "{:url('Mine/shop_order_list',array('order_type'=>3))}";
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

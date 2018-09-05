@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_htomwbnw5j8.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>员工端换宝订单-待接受</title>
+    <style>
+    </style>
+
+</head>
+<body>
+<div class="hb_top">
+    <a class="hb_topitem activity_hb" href="{:url('employee/hbOrder')}">待接受</a>
+    <a class="hb_topitem" href="{:url('employee/unOrder')}">未完成</a>
+    <a class="hb_topitem" href="{:url('employee/doneOrder')}">已完成</a>
+</div>
+
+<foreach name="order" item="vo">
+<div class="staff_orderbox">
+    <a class="hb_item" href="hb_details.html">
+        <div class="hb_itemleft">
+            <img src="__TMPL__/public/assets/imgs/ficon01@2x.png" alt="">
+        </div>
+        <div class="hb_itemright">
+            <div>回收物品：<span>{$vo.rubbish_name}</span></div>
+            <div class="hb_data">上门时间：<span>{$vo.cometime}</span> </div>
+        </div>
+    </a>
+    <div class="staff_bottom_box huanbao_order">
+        <div>
+            <div class="staff_address">
+                <div>{$vo.village}{$vo.detail_address}</div>
+                <div class="items_name"> <span class="comfirm_name">{$vo.name}</span><span>{$vo.mobile}</span></div>
+            </div>
+        </div>
+        <div class="cancel go_order staff_btn" data-id="{$vo.id}">接单</div>
+    </div>
+</div>
+</foreach>
+
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script>
+    $(function () {
+        $('.staff_btn').click(function () {
+            var id=$(this).attr('data-id');
+            $.ajax({
+                type:"POST",
+                url:"{:url('employee/acceptOrder')}",
+                data:{
+                    "id":id
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.data==1){
+                        toast("已接单")
+                        window.location.reload();
+                    }
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>

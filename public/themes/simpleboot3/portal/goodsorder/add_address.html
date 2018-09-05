@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_x9ptzbua4rr.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>添加地址</title>
+    <style>
+        /*.btn{*/
+            /*width:6.68rem;*/
+            /*height:0.88rem;*/
+            /*line-height: 0.88rem;*/
+            /*text-align: center;*/
+            /*border-radius: 0.05rem;*/
+            /*background-color: #61B62F;*/
+            /*color:#fff;*/
+            /*font-size:0.32rem;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div class="add_address">
+    <div class="add_item choose_xq">
+        <div>选择小区  <input type="text" class="xq_input" readonly></div>
+
+        <div class="iconfont icon-icon"></div>
+    </div>
+    <div class="add_item add_item_address">
+        <div>详细地址</div>
+        <div class="input_box"><input type="text" class="address_input" ></div>
+    </div>
+    <div class="add_item">
+        <div>联系人</div>
+        <div class="input_box"><input type="text" class="name_input"></div>
+    </div>
+    <div class="add_item">
+        <div>电话号码</div>
+        <div class="input_box"><input type="number" class="tel"></div>
+    </div>
+</div>
+<a class=" btn add_address_btn" >保存</a>
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/Augly_Verification.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script>
+    var addresslist = {$addresslist};
+    $('.choose_xq').click(function () {
+        weui.picker(addresslist, {
+            onChange: function(result) {
+            },
+            onConfirm: function(result) {
+                var year=$('.xq_input');
+                year.val(result[0].label)
+
+            }
+        });
+    })
+    $('.add_address_btn').click(function () {
+        var xq_input=$('.xq_input').val()
+        var address_input=$('.address_input').val();
+        var name_input=$('.name_input').val();
+        var tel=$('.tel').val();
+        if(xq_input==''){
+            toast("请选择小区")
+        } else if(address_input==''){
+            toast("请填写详细地址")
+        }else if(name_input==''){
+            toast("请填写联系人")
+        }else if(tel==''){
+            toast("请填写电话号码")
+        }else{
+            var village = xq_input;
+            var detail_address = address_input;
+            var name = name_input;
+            var mobile = tel;
+            $.ajax({
+                type:"POST",
+                url:"{:url('Goodsorder/add_address_post')}",
+                data:{
+                    "village":village,
+                    "detail_address":detail_address,
+                    "name":name,
+                    "mobile":mobile,
+                },
+                success:function (data) {
+                    if(data.code == 1){
+                        window.location.href = "{$url}"
+                    }else{
+                        toast(data.msg)
+                    }
+                }
+            })
+        }
+
+    })
+</script>
+</html>

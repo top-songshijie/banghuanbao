@@ -1,0 +1,298 @@
+<<<<<<< HEAD
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_q3qobbf7i6b.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>选择地址</title>
+    <style>
+        body{
+            padding:0 0 1rem 0;
+        }
+        .activity_roll{
+            background-color: #61B62F;
+            border: 0.02rem solid #61B62F !important;
+        }
+    </style>
+</head>
+<body>
+<div class="choose_addressitembox">
+    <foreach name="address" item="vo">
+    <div class="choose_addressitem">
+        <a class="choose_top" href="{:url('rubbish/order',array('id'=>$vo['id']))}">
+            <div class="choose_top_left">
+                <div class="iconfont icon-location"></div>
+            </div>
+            <div class="choose_top_right">
+                <div>{$vo.village} {$vo.detail_address}</div>
+                <div class="choose_name"> <span class="name">{$vo.name}</span><span>{$vo.mobile}</span> </div>
+            </div>
+        </a>
+        <div class="choose_b">
+            <div class="choose_b_left">
+                <php>if($vo['is_default']==1){</php>
+                <div class="choose_pint activity_roll"  data-id="{$vo.id}" >
+               <php>}else{</php>
+                <div class="choose_pint" data-id="{$vo.id}"  >
+              <php>}</php>
+                    <i class="iconfont icon-bianjiICONCopy-"></i>
+                </div>
+                <div>默认地址</div>
+            </div>
+            <div class="choose_b_right">
+                <a class="flex-c edit_box" href="{:url('rubbish/edit_address',array('id'=>$vo['id']))}">
+                        <i class="iconfont icon-qianming"></i>
+                    <div>编辑</div>
+                </a>
+                <div class="flex-c delete_box" delete-index='{$key}' data-id="{$vo.id}">
+                    <i class="iconfont icon-shanchu"></i>
+                    <div>删除</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </foreach>
+<a class="comfirm_btn" href="add_address.html">新增收货地址</a>
+<div class="delete_mold" style="display: none">
+    <div class="delete">
+        <div class="iconfont icon-delete2"></div>
+        <div class="delete_title">删除地址</div>
+        <div class="if_delete">您确认要删除该地址吗？</div>
+        <div class="delete_btn" delete-index='' data-id=''>确认删除</div>
+    </div>
+</div>
+
+    <div id="toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <p class="weui-toast__content">已完成</p>
+        </div>
+    </div>
+</div>
+</body>
+<script src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type="text/javascript">
+    $('.icon-delete2').click(function () {
+        $('.delete_mold').hide()
+    })
+    $('.delete_mold').click(function () {
+        $('.delete_mold').hide()
+    })
+    $('.delete').click(function (e) {
+        e.stopPropagation();
+    });
+    //设为默认地址
+    $('.choose_pint').click(function () {
+        var id=$(this).attr('data-id');
+        $('.choose_pint').each(function () {
+            $(this).removeClass('activity_roll');
+        });
+       $(this).addClass('activity_roll');
+        //alert(id);
+        $.ajax({
+            type:"post",
+            url:"{:url('rubbish/set_default_address')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function (data) {
+                if(data.data==1){
+
+                }
+            }
+        })
+    });
+
+    $('.choose_b').click(function(e){
+    	e.stopPropagation();
+    })
+    $('.delete_box').click(function(){
+    	var index=$(this).attr('delete-index');
+    	var id=$(this).attr('data-id');
+    	//console.log(id);
+    	$('.delete_btn').attr('delete-index',index);
+        $('.delete_btn').attr('data-id',id);
+    	$('.delete_mold').show();
+    })
+    $('.delete_btn').click(function(){
+    	var del_index=$(this).attr('delete-index');
+        var id=$('.delete_btn').attr('data-id');
+        console.log(id)
+    	$('.choose_addressitem').each(function(){
+    		if($(this).index() == del_index){
+                $('.delete_mold').hide();
+                $(this).remove();
+                $.ajax({
+                    type:"post",
+                    url:"{:url('rubbish/delete')}",
+                    data:{
+                        "id":id
+                    },
+                    dataType:"json",
+                    success:function (data) {
+                    }
+                })
+    			return false;
+    		}
+    	})
+    })
+</script>
+</html>
+=======
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_q3qobbf7i6b.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>选择地址</title>
+    <style>
+        body{
+            padding:0 0 1rem 0;
+        }
+        .activity_roll{
+            background-color: #61B62F;
+            border: 0.02rem solid #61B62F !important;
+        }
+    </style>
+</head>
+<body>
+<div class="choose_addressitembox">
+    <foreach name="address" item="vo">
+    <div class="choose_addressitem">
+        <a class="choose_top" href="{:url('rubbish/order',array('id'=>$vo['id']))}">
+            <div class="choose_top_left">
+                <div class="iconfont icon-location"></div>
+            </div>
+            <div class="choose_top_right">
+                <div>{$vo.village} {$vo.detail_address}</div>
+                <div class="choose_name"> <span class="name">{$vo.name}</span><span>{$vo.mobile}</span> </div>
+            </div>
+        </a>
+        <div class="choose_b">
+            <div class="choose_b_left">
+                <php>if($vo['is_default']==1){</php>
+                <div class="choose_pint activity_roll"  data-id="{$vo.id}" >
+               <php>}else{</php>
+                <div class="choose_pint" data-id="{$vo.id}"  >
+              <php>}</php>
+                    <i class="iconfont icon-bianjiICONCopy-"></i>
+                </div>
+                <div>默认地址</div>
+            </div>
+            <div class="choose_b_right">
+                <a class="flex-c edit_box" href="{:url('rubbish/edit_address',array('id'=>$vo['id']))}">
+                        <i class="iconfont icon-qianming"></i>
+                    <div>编辑</div>
+                </a>
+                <div class="flex-c delete_box" delete-index='{$key}' data-id="{$vo.id}">
+                    <i class="iconfont icon-shanchu"></i>
+                    <div>删除</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </foreach>
+<a class="comfirm_btn" href="add_address.html">新增收货地址</a>
+<div class="delete_mold" style="display: none">
+    <div class="delete">
+        <div class="iconfont icon-delete2"></div>
+        <div class="delete_title">删除地址</div>
+        <div class="if_delete">您确认要删除该地址吗？</div>
+        <div class="delete_btn" delete-index='' data-id=''>确认删除</div>
+    </div>
+</div>
+
+    <div id="toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <p class="weui-toast__content">已完成</p>
+        </div>
+    </div>
+</div>
+</body>
+<script src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type="text/javascript">
+    $('.icon-delete2').click(function () {
+        $('.delete_mold').hide()
+    })
+    $('.delete_mold').click(function () {
+        $('.delete_mold').hide()
+    })
+    $('.delete').click(function (e) {
+        e.stopPropagation();
+    });
+    //设为默认地址
+    $('.choose_pint').click(function () {
+        var id=$(this).attr('data-id');
+        $('.choose_pint').each(function () {
+            $(this).removeClass('activity_roll');
+        });
+       $(this).addClass('activity_roll');
+        //alert(id);
+        $.ajax({
+            type:"post",
+            url:"{:url('rubbish/set_default_address')}",
+            data:{"id":id},
+            dataType:"json",
+            success:function (data) {
+                if(data.data==1){
+                    toast("设置成功");
+                }
+            }
+        })
+    });
+
+    $('.choose_b').click(function(e){
+    	e.stopPropagation();
+    })
+    $('.delete_box').click(function(){
+    	var index=$(this).attr('delete-index');
+    	var id=$(this).attr('data-id');
+    	//console.log(id);
+    	$('.delete_btn').attr('delete-index',index);
+        $('.delete_btn').attr('data-id',id);
+    	$('.delete_mold').show();
+    })
+    $('.delete_btn').click(function(){
+    	var del_index=$(this).attr('delete-index');
+        var id=$('.delete_btn').attr('data-id');
+    	$('.choose_addressitem').each(function(){
+    		if($(this).index() == del_index){
+                $('.delete_mold').hide();
+                $(this).remove();
+                $.ajax({
+                    type:"post",
+                    url:"{:url('rubbish/delete')}",
+                    data:{
+                        "id":id
+                    },
+                    dataType:"json",
+                    success:function (data) {
+                    }
+                })
+    			return false;
+    		}
+    	})
+    })
+</script>
+</html>
+>>>>>>> 9c781cc2cf65170209d1936be01b7acac8aa5bb9

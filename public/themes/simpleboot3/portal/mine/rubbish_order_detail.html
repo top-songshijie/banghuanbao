@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_pzdalqwyzem.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>换订单详情</title>
+    <style>
+        body{
+            padding:0 0 1rem 0;
+        }
+    </style>
+</head>
+<body>
+<div class="comfirm_item_box">
+    <form id="myform">
+    <volist name="data.detail.rubbish_name" id="vo" key="k">
+        <div class="comfirm_item">
+            <div class="comfirm_left">
+                <div class="comfirn_content flex-c">
+                    <if condition="$vo eq '衣服'">
+                        <div class="iconfont icon-yifu"></div>
+                    <elseif condition="$vo eq '塑料'">
+                        <div class="iconfont icon-xiangjiaosuliao"></div>
+                    <elseif condition="$vo eq '玻璃'">
+                        <div class="iconfont icon-boliweiwai"></div>
+                    <elseif condition="$vo eq '纸张'">
+                        <div class="iconfont icon-zhizhang"></div>
+                    <elseif condition="$vo eq '金属'">
+                        <div class="iconfont icon-guijinshuzhongshou"></div>
+                    <else>
+                        <div class="iconfont icon-tubiao-chatou"></div>
+                    </if>
+                </div>
+                <div>{$vo}</div>
+                <div class="hb_text"> ￥<php>echo $data['detail']['rubbish_price'][$k-1]</php>/kg</div>
+            </div>
+            <if condition="$data.status eq 1">
+                <div class="comfirm_right undoing_detailsinput">
+                    <input name="zl" type="number" placeholder="请输入重量" value="">
+                    <span class="undoing_detailsinput_txt">kg</span>
+                </div>
+                <else />
+                <div><php>echo $data['detail']['rubbish_weight'][$k-1]</php>kg</div>
+            </if>
+        </div>
+    </volist>
+    </form>
+</div>
+
+<div class="bottom_items_box hb_box">
+    <div class="bottom_items choosetime">
+        <div class="bottom_item_left">
+            <div class="iconfont icon-shijian"></div>
+            <div>上门时间</div>
+            <div class="items_time">{$data.cometime}</div>
+        </div>
+        <div class="bottom_item_right">
+
+        </div>
+    </div>
+    <div class="bottom_items chooseaddress">
+        <div class="bottom_item_left">
+            <div class="iconfont icon-location"></div>
+            <!--<div >添加地址</div>-->
+            <div id="address">
+                <div>{$data.village} {$data.detail_address}</div>
+                <div class="items_name"> <span class="comfirm_name">{$data.name}</span><span>{$data.mobile}</span></div>
+            </div>
+        </div>
+        <div class="bottom_item_right">
+
+        </div>
+    </div>
+</div>
+<if condition="$data.status eq 1">
+    <div class="comfirm_btn">确认</div>
+    <else />
+    <div class="hb_total"><div class="ab_bh">总计： <span class="total_num">￥{$data.total_price}</span> </div></div>
+</if>
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script>
+    $('.comfirm_btn').click(function () {
+        var data = $('#myform').serializeArray();
+        var id = "{$data.id}";
+        $.ajax({
+            type:"POST",
+            url:"{:url('Rubbish/confirm_rubbish_order')}",
+            data:{
+                "data":data,
+                "id":id,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    location.href = "{:url('Mine/rubbish_order_list',array('order_type'=>2))}";
+                }else{
+                    alert(data.msg)
+                }
+            }
+        })
+    })
+</script>
+<script type="text/javascript">
+//    $(function () {
+//        $('.roll_chice ').click(function () {
+//            if($(this).hasClass('activity_roll')){
+//                $(this).removeClass('activity_roll')
+//            }else{
+//                $(this).addClass('activity_roll')
+//            }
+//
+//
+//        })
+//        $('.choosetime').click(function (event) {
+//            var _this = this;
+//            weui.datePicker({
+//                start: new Date(),
+//                end: 2030,
+//                defaultValue: [new Date().getFullYear(), new Date().getMonth()+1, new Date().getDate()],
+//                // defaultValue: [ new Date().getMonth()+1, new Date().getDate()],
+//                onConfirm: function(result){
+//                    $('.ma_expect_date_picker .weui-picker').on('animationend webkitAnimationEnd', function() {
+//                        show_expect_time_picker(_this, result);
+//                    });
+//                },
+//                id: 'ma_expect_date',
+//                className: 'ma_expect_date_picker'
+//            });
+//        });
+//        // -----------------------二级调用：时间
+//        function show_expect_time_picker(_this, date) {
+//            var date = date[0].label + date[1].label + date[2].label;
+//            weui.picker([{
+//                label: '10:00-11:00',
+//                value: '10:00-11:00'
+//            }, {
+//                label:  '10:00-11:00',
+//                value:  '10:00-11:00'
+//            }, {
+//                label:  '10:00-11:00',
+//                value: '10:00-11:00'
+//            }, {
+//                label:  '10:00-11:00',
+//                value:  '10:00-11:00'
+//            }, {
+//                label: '10:00-11:00',
+//                value:  '10:00-11:00'
+//            }], {
+//                onChange: function(result) {
+//                },
+//                onConfirm: function(result) {
+//                    $('.time').html(date+result[0].label);
+//                    $('.time').removeClass('text-no');
+//                }
+//            });
+//        }
+//        $('.chooseaddress').click(function () {
+//            $('.text-address').hide();
+//        })
+//
+//    })
+</script>
+</html>

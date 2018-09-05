@@ -1,0 +1,293 @@
+<include file="public@header"/>
+<style type="text/css">
+    .pic-list li {
+        margin-bottom: 5px;
+    }
+</style>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="goods_banner[]" value="{filepath}">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
+
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('AdminGoods/index')}">所有商品</a></li>
+        <li class="active"><a>编辑商品</a></li>
+    </ul>
+    <form action="{:url('AdminGoods/editPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+        <!--<form action="{:url('AdminGoods/editPost')}" method="post" class="form-horizontal margin-top-20">-->
+        <div class="row">
+            <div class="col-md-9">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="100">分类<span class="form-required">*</span></th>
+                        <td>
+                            <select name="cate" style="width:150px;" class="form-control">
+                                <volist name="catelist" id="vo">
+                                    <option value="{$vo.id}" <if condition="$info['cid'] eq $vo['id']" >selected</if>>{$vo.cate_name}</option>
+                                </volist>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品名称<span class="form-required">*</span></th>
+                        <td>
+                            <input class="form-control" type="text" name="goods_name" required value="{$info.goods_name}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>现价/环保币<span class="form-required">*</span></th>
+                        <td>
+                            <input class="form-control" type="number" name="goods_now_price" required value="{$info.goods_now_price}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>原价<span class="form-required">*</span></th>
+                        <td>
+                            <input class="form-control" type="number" name="goods_ago_price" required value="{$info.goods_ago_price}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品简介<span class="form-required">*</span></th>
+                        <td>
+                            <textarea class="form-control" name="shortcontent" style="height: 50px;"
+                                      placeholder="请填写摘要" >{$info.shortcontent}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品详情</th>
+                        <td>
+                            <script type="text/plain" id="content" name="content">{$info.content}</script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>相册图集</th>
+                        <td>
+                            <ul id="photos" class="pic-list list-unstyled form-inline">
+                                <notempty name="info.goods_banner">
+                                    <foreach name="info.goods_banner" item="vo">
+                                        <php>$img_url=cmf_get_image_preview_url($vo);</php>
+                                        <li id="saved-image{$key}">
+                                            <input id="photo-{$key}" type="hidden" name="goods_banner[]"
+                                                   value="{$vo}">
+                                            <img id="photo-{$key}-preview"
+                                                 src="{:cmf_get_image_preview_url($vo)}"
+                                                 style="height:36px;width: 36px;"
+                                                 onclick="parent.imagePreviewDialog(this.src);">
+                                            <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
+                                            <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
+                                        </li>
+                                    </foreach>
+                                </notempty>
+                            </ul>
+                            <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
+                               class="btn btn-default btn-sm">选择图片</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品属性</th>
+                        <td>
+                            <ul id="goodsatt" class="pic-list list-unstyled form-inline">
+                                <volist name="list" id="vo" key="k">
+                                    <li>
+                                        <input class="form-control"  type="text" name="attkey_name[]" value="{$vo.attkey_name}" style="width: 150px;" placeholder="属性名称：如尺寸" required>
+                                        <input class="form-control"  type="text" name="attvalue_name[]" value="{$vo.str_attvalue_name}" style="width: 250px;" placeholder="M,L,XL,XXL" required>
+                                        <input class="form-control"  type="text" name="goods_attkey_now_price[]" value="{$vo.goods_attkey_now_price}" style="width: 250px;" placeholder="商品现价" required>
+                                        <input class="form-control"  type="text" name="goods_attkey_ago_price[]" value="{$vo.goods_attkey_ago_price}" style="width: 250px;" placeholder="商品原价" required>
+                                        <if condition="$k neq 1">
+                                            <a onclick="$(this).parent().remove()" style="cursor:pointer">移除</a>
+                                        </if>
+                                    </li>
+                                </volist>
+                            </ul>
+                            <a class="btn btn-default btn-sm" id="addattr">添加属性</a>
+                        </td>
+                    </tr>
+
+                </table>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <input type="hidden" name="id" value="{$info.id}">
+                        <!--<button type="submit" class="btn btn-primary">{:lang('EDIT')}</button>-->
+                        <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('EDIT')}</button>
+                        <a class="btn btn-default" href="{:url('AdminGoods/index')}">{:lang('BACK')}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <table class="table table-bordered">
+                    <tr>
+                        <th><b>缩略图</b></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="text-align: center;">
+                                <input type="hidden" name="goods_thumb" id="thumbnail" value="{$info.goods_thumb}">
+                                <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                <if condition="empty($info.goods_thumb)">
+                                    <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                         id="thumbnail-preview"
+                                         width="135" style="cursor: pointer"/>
+                                    <else/>
+                                    <img src="{:cmf_get_image_preview_url($info.goods_thumb)}"
+                                         id="thumbnail-preview"
+                                         width="135" style="cursor: pointer"/>
+                                </if>
+                                </a>
+                                <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><b>发布时间</b></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control js-bootstrap-datetime" type="text" name="create_time"
+                                   value="{$info.create_time}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><b>限时特价</b></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <php>
+                                if($info['if_tejia'] == 1){
+                                    $checked_yes = "checked";
+                                    $checked_no = "";
+                                }else{
+                                $checked_yes = "";
+                                $checked_no = "checked";
+                                }
+                            </php>
+                            <input type="radio" name="if_tejia" value="1" {$checked_yes}>是&nbsp;&nbsp;
+                            <input type="radio" name="if_tejia" value="0" {$checked_no}>否
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><b>兑换商品</b></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <php>
+                                if($info['if_only_exchange'] == 1){
+                                $checked_yes = "checked";
+                                $checked_no = "";
+                                }else{
+                                $checked_yes = "";
+                                $checked_no = "checked";
+                                }
+                            </php>
+                            <input type="radio" name="if_only_exchange" value="1" {$checked_yes}>是&nbsp;&nbsp;
+                            <input type="radio" name="if_only_exchange" value="0" {$checked_no}>否
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><b>热门商品</b></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <php>
+                                if($info['if_recommend'] == 1){
+                                $checked_yes = "checked";
+                                $checked_no = "";
+                                }else{
+                                $checked_yes = "";
+                                $checked_no = "checked";
+                                }
+                            </php>
+                            <input type="radio" name="if_recommend" value="1" {$checked_yes}>是&nbsp;&nbsp;
+                            <input type="radio" name="if_recommend" value="0" {$checked_no}>否
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><b>是否上架</b></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <php>
+                                if($info['if_shelf'] == 1){
+                                $checked_yes = "checked";
+                                $checked_no = "";
+                                }else{
+                                $checked_yes = "";
+                                $checked_no = "checked";
+                                }
+                            </php>
+                            <input type="radio" name="if_shelf" value="1" {$checked_yes}>是&nbsp;&nbsp;
+                            <input type="radio" name="if_shelf" value="0" {$checked_no}>否
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    //编辑器路径定义
+    var editorURL = GV.WEB_ROOT;
+</script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+        editorcontent = new baidu.editor.ui.Editor();
+        editorcontent.render('content');
+        try {
+            editorcontent.sync();
+        } catch (err) {
+        }
+
+        $('.btn-cancel-thumbnail').click(function () {
+            $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+            $('#thumbnail').val('');
+        });
+
+    });
+
+    function doSelectCategory() {
+        var selectedCategoriesId = $('#js-categories-id-input').val();
+        openIframeLayer("{:url('AdminCategory/select')}?ids=" + selectedCategoriesId, '请选择分类', {
+            area: ['700px', '400px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                var selectedCategories = iframeWin.confirm();
+                if (selectedCategories.selectedCategoriesId.length == 0) {
+                    layer.msg('请选择分类');
+                    return;
+                }
+                $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+                $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));
+                //console.log(layer.getFrameIndex(index));
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+            }
+        });
+    }
+</script>
+<script>
+    $('#addattr').click(function () {
+        var html = `<li>
+                                    <input class="form-control"  type="text" name="attkey_name[]" style="width: 150px;" placeholder="属性名称：如尺寸" required>
+                                    <input class="form-control"  type="text" name="attvalue_name[]" style="width: 250px;" placeholder="M,L,XL,XXL" required>
+                                    <input class="form-control"  type="text" name="goods_attkey_now_price[]" style="width: 250px;" placeholder="商品现价" required>
+                                    <input class="form-control"  type="text" name="goods_attkey_ago_price[]" style="width: 250px;" placeholder="商品原价" required>
+                                    <a onclick="$(this).parent().remove()" style="cursor:pointer">移除</a>
+                                </li>`;
+        $('#goodsatt').append(html);
+    })
+</script>
+</body>
+</html>

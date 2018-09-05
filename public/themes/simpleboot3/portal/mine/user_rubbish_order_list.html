@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_htomwbnw5j8.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>换宝订单-未完成</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="hb_top">
+    <if condition="$order_type eq 2">
+        <a class="hb_topitem " href="{:url('Mine/rubbish_order_list',array('order_type'=>1))}">未完成</a>
+        <a class="hb_topitem activity_hb" href="{:url('Mine/rubbish_order_list',array('order_type'=>2))}">已完成</a>
+        <else />
+        <a class="hb_topitem activity_hb" href="{:url('Mine/rubbish_order_list',array('order_type'=>1))}">未完成</a>
+        <a class="hb_topitem " href="{:url('Mine/rubbish_order_list',array('order_type'=>2))}">已完成</a>
+    </if>
+</div>
+<volist name="data" id="vo">
+    <div class="hb_content">
+        <if condition="$order_type eq 2">
+            <a class="hb_item hb_done" href="{:url('Mine/rubbish_order_detail',array('id'=>$vo['id']))}">
+            <else />
+                <a class="hb_item hb_done" href="javascript:;">
+        </if>
+            <div class="hb_itemleft">
+                <img src="__TMPL__/public/assets/imgs/ficon01@2x.png" alt="">
+            </div>
+            <div class="hb_itemright">
+                <div>回收物品：<span>{$vo.rubbish_name}</span></div>
+                <div class="hb_data">上门时间：<span>{$vo.cometime}</span> </div>
+            </div>
+        </a>
+        <if condition="$order_type eq 2">
+            <div class="hb_itembottom">
+                <a class="cancel go_order goassess" href="{:url('Mine/huanbao_comment',array('id'=>$vo['id']))}">评价订单</a>
+            </div>
+        <else /></if>
+
+    </div>
+</volist>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script>
+
+</script>
+</body>
+</html>

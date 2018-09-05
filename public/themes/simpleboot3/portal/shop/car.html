@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_k92tf50nu6.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>购物车</title>
+    <style>
+        body{
+            padding:0 0 2.1rem 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="cartbox">
+    <volist name="list" id="vo">
+        <div class="cartitem" data-id="{$vo.id}">
+            <div class="iconfont icon-delete2" item-index="{$vo.id}"></div>
+            <div class="cartitem_left" data-id="{$vo.id}"><i class="iconfont icon-bianjiICONCopy-"></i></div>
+            <div class="cartitem_right">
+                <div class="cart_img"><img src="{$vo.goods_thumb}" alt=""></div>
+                <div class="cart_c">
+                    <div class="cart_top">
+                        <div>{$vo.goods_name}</div>
+                    </div>
+                    <div class="cart_attr">{$vo.shortcontent}</div>
+                    <div class="cart_bttom">
+                        <div >￥<span class="jiage">{$vo.total_price}</span></div>
+                        <div class="num_box">
+                            <div class="iconfont icon-jian" data-id="{$vo.id}"></div>
+                            <div class="input_numbox"><input type="number" value="{$vo.num}" class="input_val" maxnum="1000" minnum="1"></div>
+                            <div class=" iconfont icon-jia" data-id="{$vo.id}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </volist>
+</div>
+<eq name="is_null" value="2">
+<div class="cart_total">
+    <div class="choose_all">
+        <div class="cart_total_i activity_cart1"><i class="iconfont icon-bianjiICONCopy-"></i></div>
+        <div>全选</div>
+    </div>
+    <div>合计：￥ <span class="total_price"> 0</span> </div>
+  <div class="gopay">去付款 <span class="gopay_nums">(</span><span class="gopay_num gopay_nums">1</span><span class="gopay_nums">)</span></div>
+</div>
+</eq>
+<div class="bottom bottom_nav">
+    <a class="bottom_item" href="{:url('Shop/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav01@2x.png" alt="">
+        </div>
+        <div>首页</div>
+    </a>
+    <a class="bottom_item" href="{:url('Shop/all_cate')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav09@2x.png" alt="">
+        </div>
+        <div>分类</div>
+    </a>
+    <a class="bottom_item avitity" href="{:url('Shop/car')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav12@2x.png" alt="">
+
+        </div>
+        <div>购物车</div>
+    </a>
+    <a class="bottom_item" href="{:url('Mine/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav07@2x.png" alt="">
+        </div>
+        <div>我的</div>
+    </a>
+</div>
+<div class="delete_mold" style="display: none">
+    <div class="delete">
+        <div class="iconfont icon-delete2"></div>
+        <div class="delete_title">确认删除</div>
+        <div class="if_delete">您确认删除选中商品吗？</div>
+        <div class="delete_btn" delete-index=''>确认删除</div>
+    </div>
+</div>
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+        var is_delete = "{$is_delete}"
+        if(is_delete == 1){
+            toast('已帮您清除过期的商品')
+        }
+    })
+    $(function () {
+        //默认全部选中
+        $('.cartitem_left').each(function () {
+            $(this).addClass('activity_cart');
+        })
+        TotalPrice();
+        var mySwiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+        })
+        $('.cartitem_left').click(function () {
+            var _this=$(this);
+            if(_this.hasClass('activity_cart')){
+                _this.removeClass('activity_cart')
+            }else{
+                _this.addClass('activity_cart')
+            }
+            var length_a=$('.activity_cart').length;
+
+            var length_left=$('.cartitem_left').length;
+            if(length_a == length_left){
+                $('.cart_total_i').addClass('activity_cart1');
+                $('.cartitem_left').each(function () {
+                    $(this).addClass('activity_cart');
+                })
+            }else{
+                $('.cart_total_i').removeClass('activity_cart1');
+            }
+            TotalPrice();
+            //统计商品数
+            var pro_length=$('.activity_cart').length;
+            $('.gopay_num').html(pro_length)
+        })
+        // 全选
+        $('.cart_total_i').click(function () {
+            var _this=$(this);
+            if(_this.hasClass('activity_cart1')){
+                _this.removeClass('activity_cart1')
+                $('.cartitem_left').each(function () {
+                    $(this).removeClass('activity_cart')
+                })
+            }else{
+                _this.addClass('activity_cart1');
+                $('.cartitem_left').each(function () {
+                    $(this).addClass('activity_cart');
+                })
+            }
+            TotalPrice();
+            //统计商品数
+            var pro_length=$('.activity_cart').length;
+            $('.gopay_num').html(pro_length)
+        })
+        // 删除
+        $('.icon-delete2').click(function () {
+        	var index=$(this).attr('item-index');
+        	$('.delete_btn').attr('delete-index',index)
+            $('.delete_mold').show();
+//             $(this).parent().remove();
+        })
+        //商品数量减
+        $('.icon-jian').click(function () {
+            var t = $(this);
+            var car_id = $(this).data('id');
+            $.ajax({
+                type:'POST',
+                url:"{:url('Goodsorder/dec_car')}",
+                data:{
+                    'car_id':car_id
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        var inputbox=t.siblings('.input_numbox');
+                        var num=inputbox.find('.input_val').val()-1;
+                        if(num<1){
+                            $('.weui-icon-success-no-circle').hide();
+                            toast('商品数量不能在少啦')
+                            inputbox.find('.input_val').val(num+1);
+                        }else{
+                            inputbox.find('.input_val').val(num);
+                            TotalPrice();
+                        }
+                    }
+                }
+            })
+
+        })
+        //商品数量加
+        $('.icon-jia').click(function () {
+            var t=$(this);
+            var car_id = $(this).data('id');
+            $.ajax({
+                type:'POST',
+                url:"{:url('Goodsorder/add_car')}",
+                data:{
+                    'car_id':car_id
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        var inputbox=t.siblings('.input_numbox');
+                        var num=parseInt(inputbox.find('.input_val').val()) + 1;
+                        var maxnum=parseInt(inputbox.find('.input_val').attr('maxnum'));
+                        if(num > maxnum){
+                            $('.weui-icon-success-no-circle').hide();
+                            toast('商品库存不足')
+                            inputbox.find('.input_val').val(num-1);
+                        }else{
+                            inputbox.find('.input_val').val(num);
+                            TotalPrice();
+                        }
+                    }
+                }
+            })
+        })
+        $('.input_val').change(function () {
+            var num=parseInt($(this).val());
+            var maxnum=parseInt($(this).attr('maxnum'));
+            if(num >= maxnum){
+                $('.weui-icon-success-no-circle').hide();
+                toast('商品库存不足')
+                $(this).val(maxnum);
+            }else{
+                $(this).val(num);
+                TotalPrice();
+            }
+        })
+        //总价
+        function TotalPrice() {
+            var allprice = 0; //总价
+            $(".cartbox .activity_cart").each(function() { //循环每个商品
+                var t = $(this);
+                var baseroot = t.siblings('.cartitem_right');
+                var number = baseroot.find('.input_val').val();
+                 allprice += baseroot.find('.jiage').html()* number;
+
+            });
+            $('.total_price').html(allprice);
+        }
+        //统计商品数
+        var pro_length=$('.activity_cart').length;
+        $('.gopay_num').html(pro_length)
+        $('.delete_mold').click(function () {
+            $(this).hide();
+        })
+        $('.delete').click(function (e) {
+            e.stopPropagation();
+        })
+        $('.delete .icon-delete2').click(function () {
+            $('.delete_mold').hide();
+        })
+        $('.delete_btn').click(function(){
+        	var deleteindex=$(this).attr('delete-index');
+            $.ajax({
+                type:'POST',
+                url:"{:url('Goodsorder/del_car')}",
+                data:{
+                    'car_id':deleteindex
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        $('.cartitem').each(function(){
+                            if(deleteindex == $(this).data('id')){
+                                $(this).remove();
+                                $('.delete_mold').hide();
+                                history.go(0);
+                            }
+                        })
+                    }
+                }
+            })
+
+        })
+    })
+
+    //去付款
+    $('.gopay').click(function () {
+        var car_id = ''
+        $('.activity_cart').each(function () {
+            car_id +=',' + $(this).data('id');
+        })
+        $.ajax({
+            type:"POST",
+            url:"{:url('Goodsorder/if_default_address')}",
+            data:{
+                "car_id":car_id,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    window.location.href = data.data;
+                }else{
+                    toast(data.msg)
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_4o1ypewi9yd.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>订单确认</title>
+    <style>
+        body{
+            padding:0 0 1rem 0;
+        }
+    </style>
+</head>
+<body>
+<div class="pro_confirmtop" >
+    <a class="pro_conleft" href="{:url('Goodsorder/address_list',array('car_id'=>$car_id))}">
+        <div class="items_name pro_conname"> <span class="comfirm_name">{$address_info.name}</span><span>{$address_info.mobile}</span></div>
+        <div class="address_box pro_conname">
+            <div class="iconfont icon-dizhi"></div>
+            <div>{$address_info.village}  {$address_info.detail_address}</div>
+        </div>
+    </a>
+    <div class="iconfont icon-common-jinru-copy"></div>
+    <div class="bttom_img">
+        <img src="__TMPL__/public/assets/imgs/add.png" alt="">
+    </div>
+</div>
+<div class="pro_boxitem">
+    <volist name="list" id="vo">
+    <div class="order_item_centent">
+        <div class="order_item_centent_left"><img src="{$vo.goods_info.goods_thumb}" alt=""></div>
+        <div class="order_item_centent_right">
+            <div class="order_title">{$vo.goods_info.goods_name}</div>
+            <div class="attr pro_attr">{$vo.attvaluename}</div>
+            <div class="pro_price">
+                <div >￥{$vo.one_price}</div>
+                <div >X <span>{$vo.num}</span></div>
+            </div>
+        </div>
+    </div>
+    </volist>
+</div>
+<div class="pro_itembox">
+    <div class="cell">
+        <div>商品金额</div>
+        <div>￥{$total_price}</div>
+    </div>
+    <div class="cell">
+        <div>运费</div>
+        <div>￥{$freight_price}</div>
+    </div>
+</div>
+<div class="pro_itembox">
+    <div class="cell">
+        <div>配送方式</div>
+        <div>快递</div>
+    </div>
+    <div class="cell">
+        <div>支付方式</div>
+        <div>微信支付</div>
+    </div>
+    <div class="cell">
+        <div>环保币抵现 <span class="num_xtx">（当前环保币{$coin}个可抵现{$coin}元）</span></div>
+        <div class="choosebox aivitity_box" data-type="true">
+            <div class="choosee_item"></div>
+        </div>
+    </div>
+</div>
+<div class="cart_total pro_confirmbottom">
+    <div class="gopay pro_gopay">确认订单 </div>
+    <div id="true_price">合计：￥{$true_price}</div>
+</div>
+<!--弹框-->
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" >
+    wx.config({
+        debug: false,
+        appId: "{$signPackage['appId']}",
+        timestamp: "{$signPackage['timestamp']}",
+        nonceStr: "{$signPackage['nonceStr']}",
+        signature: "{$signPackage['signature']}",
+        jsApiList: [
+            'chooseWXPay',
+        ]
+    });
+
+    $(function () {
+        $('.choosebox').click(function () {
+            if($(this).hasClass("aivitity_box")){
+                $(this).attr('data-type','false');
+                var total_price = "{$total_price}";
+                var freight_price = "{$freight_price}";
+                var t_price = '合计：￥'+(parseInt(total_price)+parseInt(freight_price));
+                $('#true_price').html(t_price);
+                $(this).removeClass("aivitity_box");
+                $('.choosee_item').animate({'right':0},'slow');
+                $('.choosee_item').animate({'left':0.5+'rem'},'slow')
+            }else{
+                $(this).attr('data-type','true');
+                var total_price = "{$total_price}";
+                var coin = "{$coin}";
+                var freight_price = "{$freight_price}";
+                var t_price = '合计：￥'+(parseInt(total_price)-parseInt(coin)+parseInt(freight_price));
+                if((parseInt(total_price)-parseInt(coin)+parseInt(freight_price) < 0)){
+                    t_price = '合计：￥'+0;
+                }
+                $('#true_price').html(t_price)
+                $(this).addClass("aivitity_box")
+                $('.choosee_item').animate({'left':0},'slow');
+                $('.choosee_item').animate({'right':0.5+'rem'},'slow');
+            }
+        })
+    })
+
+    //确认订单
+    $('.pro_gopay').click(function () {
+        var address_id = "{$address_info.id}";
+        var use_coin = $('.choosebox').data('type');
+        $.ajax({
+            type:"POST",
+            url:"{:url('Goodsorder/car_put_order')}",
+            data:{
+                "address_id":address_id,
+                "use_coin":use_coin
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    if(data.msg == '微信'){
+                        wxpaydata = JSON.parse(data.data)
+                        wxpay(wxpaydata)
+                    }else{
+                        toast('已使用环保币全部抵现成功')
+                        setTimeout(function () {
+                            location.href = "{:url('Mine/index')}";
+                        },2000)
+                    }
+                }else{
+                    alert(data.msg)
+                }
+            }
+        })
+    })
+
+    //微信支付公用方法
+    function wxpay(wxpaydata) {
+        wx.chooseWXPay({
+            timestamp: wxpaydata.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字
+            nonceStr: wxpaydata.nonceStr, // 支付签名随机串，不长于 32 位
+            package: wxpaydata.package, //
+            signType: wxpaydata.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            paySign: wxpaydata.paySign, // 支付签名
+            success: function (res) {
+                toast('支付成功')
+                setTimeout(function () {
+                    location.href = "{:url('Mine/index')}";
+                },2000)
+            },
+            cancel: function(res){
+                toast('取消支付')
+                setTimeout(function () {
+                    location.href = "{:url('Mine/index')}";
+                },2000)
+            }
+        });
+    }
+</script>
+</body>
+</html>

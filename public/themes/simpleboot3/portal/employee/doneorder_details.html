@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_pzdalqwyzem.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>换宝已完成订单详情</title>
+    <style>
+        body{
+            padding:0 0 1rem 0;
+        }
+    </style>
+</head>
+<body>
+<div class="comfirm_item_box">
+
+    <foreach name="rubbish" item="vo">
+    <div class="comfirm_item">
+        <div class="comfirm_left">
+            <div class="comfirn_content flex-c">
+                <php>if($vo['name']=="衣服"){</php>
+                <div class="iconfont icon-yifu"></div>
+                <php>}elseif($vo['name']=="塑料"){</php>
+                <div class="iconfont icon-xiangjiaosuliao"></div>
+                <php>}elseif($vo['name']=="玻璃"){</php>
+                <div class="iconfont icon-boliweiwai"></div>
+                <php>}elseif($vo['name']=="纸张"){</php>
+                <div class="iconfont icon-zhizhang"></div>
+                <php>}elseif($vo['name']=="金属"){</php>
+                <div class="iconfont icon-guijinshuzhongshou"></div>
+                <php>}elseif($vo['name']=="电器"){</php>
+                <div class="iconfont icon-tubiao-chatou"></div>
+                <php>}</php>
+            </div>
+            <div>{$vo.name}</div>
+            <div class="hb_text"> ￥{$vo.price}/kg</div>
+        </div>
+        <div>{$vo.weight}kg</div>
+    </div>
+    </foreach>
+
+</div>
+
+<div class="bottom_items_box hb_box">
+    <div class="bottom_items choosetime">
+        <div class="bottom_item_left">
+            <div class="iconfont icon-shijian"></div>
+            <div>上门时间</div>
+            <div class="items_time">{$order.cometime}</div>
+        </div>
+        <div class="bottom_item_right">
+
+        </div>
+    </div>
+    <div class="bottom_items chooseaddress">
+        <div class="bottom_item_left">
+            <div class="iconfont icon-location"></div>
+            <!--<div >添加地址</div>-->
+            <div id="address">
+                <div>{$order.village}{$order.detail_address}</div>
+                <div class="items_name"> <span class="comfirm_name">{$order.name}</span><span>{$order.mobile}</span></div>
+            </div>
+        </div>
+        <div class="bottom_item_right">
+
+        </div>
+    </div>
+</div>
+<div class="hb_total"><div class="ab_bh">总计： <span class="total_num">￥{$order.total_price}</span> </div></div>
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.roll_chice ').click(function () {
+            if($(this).hasClass('activity_roll')){
+                $(this).removeClass('activity_roll')
+            }else{
+                $(this).addClass('activity_roll')
+            }
+
+
+        })
+
+        $('.chooseaddress').click(function () {
+            $('.text-address').hide();
+        })
+
+    })
+</script>
+</html>

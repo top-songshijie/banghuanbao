@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_4o1ypewi9yd.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>换宝商城</title>
+    <style>
+        body{
+            padding:1rem 0 0 0;
+        }
+        .swiper-container-horizontal > .swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+            bottom: -5px;
+        }
+
+        .swiper-container {
+            height: 3.6rem;
+        }
+
+        .swiper-pagination-bullet {
+            width: 6px;
+            height: 6px;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #5D910B;
+        }
+    </style>
+</head>
+<body>
+<div class="market_top">
+    <div class="top_input seach_input">
+        <input type="search" placeholder="输入您想要的商品" id="keyword" value="{$keyword}">
+        <span class="iconfont icon-sousuo"></span>
+    </div>
+    <div class="search_txt">搜索</div>
+</div>
+<!--全部商品-->
+<div class="goodsbox">
+    <volist name="list" id="vo">
+        <a class="goods goods_top" href="{:url('Shop/goods_detail',array('id'=>$vo['id']))}">
+            <div class="goods_img">
+                <img src="{$vo.goods_thumb}" alt="">
+            </div>
+            <div class="goods_txtbox">
+                <div>{$vo.goods_name}</div>
+                <if condition="$vo.if_only_exchange eq 1">
+                    <div > <span class="hprice">{$vo.goods_now_price}环保币</span></div>
+                    <else />
+                    <div > <span class="hprice">￥{$vo.goods_now_price}</span></div>
+                </if>
+            </div>
+        </a>
+    </volist>
+</div>
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var mySwiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+        })
+        $('.search_txt').click(function () {
+            var param=$("input[type='search']").val();
+            if(param==''){
+                toast('请输入搜索内容')
+            }else{
+                location.href = "{:url('Shop/search')}?keyword="+param
+            }
+        })
+    })
+
+</script>
+</body>
+</html>

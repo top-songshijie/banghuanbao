@@ -1,0 +1,484 @@
+<<<<<<< HEAD
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_ao1zpuzz87r.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>首页</title>
+    <style>
+        body {
+            height: 100%;
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+            left: 0;
+            top: 0;
+        }
+
+        .all {
+
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0,0,0.3);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+
+        }
+.all_click{
+    position: absolute;
+    top:60%;
+
+    z-index:100;
+    width:2rem;
+    height:2.5rem;
+    opacity: 0;
+
+}
+        .all img {
+
+            height: 100%;
+        }
+
+        .swiper-container-horizontal > .swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+            bottom: -5px;
+        }
+
+        .swiper-container {
+            height: 30%;
+
+        }
+
+        .swiper-pagination-bullet {
+            width: 6px;
+            height: 6px;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #5D910B;
+        }
+
+        .notice-title {
+            color: #fff;
+        }
+
+        .notice-content {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            white-space: nowrap;
+            overflow: hidden;
+            float: left;
+
+        }
+        .notice-text {
+            top: 0.3rem;
+            font-size: 14px;
+            position: absolute;
+        }
+    .help{
+     display: block;
+     top:60%;
+     text-decoration: none;
+     font-weight: bold;
+     position:absolute;
+     color:#6A6A6A;
+     font-size:0.88rem;
+      }
+        .help:active{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <foreach name="banner" item="vo">
+        <div class="swiper-slide">
+            <div class="index_top">
+                <a href="{$vo.url}">
+                <img src="{:cmf_get_image_url($vo.image)}" alt="">
+                </a>
+            </div>
+        </div>
+        </foreach>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
+<div class="index_content" style="background-image: url('__TMPL__/public/assets/imgs/abg.png')">
+    <a class="help" href="{:url('rubbish/order')}">帮</a>
+    <div class="index_content_top">
+        <div class="index-icon notice-title"><i class="iconfont icon-lingdang1"></i></div>
+        <div class="index_roll notice-content">
+            <div class="notice-text">
+                <foreach name="prompt_list" item="vo">
+                <span>{$vo}</span>
+                </foreach>
+            </div>
+        </div>
+    </div>
+    <div class="index_btn">感谢你对环保的支持</div>
+</div>
+<div class="bottom">
+    <a class="bottom_item avitity" href="{:url('Rubbish/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav02@2x.png" alt="">
+        </div>
+        <div>首页</div>
+    </a>
+    <a class="bottom_item" href="{:url('Shop/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav03@2x.png" alt="">
+
+        </div>
+        <div>换宝商城</div>
+    </a>
+    <a class="bottom_item" href="{:url('Mine/comment_list')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav05@2x.png" alt="">
+
+        </div>
+        <div>评价</div>
+    </a>
+    <a class="bottom_item" href="{:url('Mine/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav07@2x.png" alt="">
+        </div>
+        <div>我的</div>
+    </a>
+</div>
+<eq name="$is_first" value="1">
+    <div class="all">
+        <div class="all_click"></div>
+        <img src="__TMPL__/public/assets/imgs/lead@2x.png" alt="">
+    </div>
+</eq>
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var mySwiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+        })
+        $(".notice-content").textScroll();
+    })
+    //引导点击
+    $('.all_click').click(function () {
+        $(".all").fadeOut(3000);
+        $.ajax({
+            type:"POST",
+            url:"{:url('Rubbish/update_first')}",
+            data:{},
+            success:function (data) {
+                if(data.code == 1){
+                    //成功，然而并不用任何操作
+                }
+            }
+        })
+    })
+    /**
+     * 从右往左滚动文字
+     * @returns {undefined}
+     */
+    $.fn.textScroll = function () {
+        // 滚动步长(步长越大速度越快)
+        var step_len = 20;
+        var this_obj = $(this);
+        var child = this_obj.children();
+        var this_width = this_obj.width();
+        var child_width = child.width();
+        var continue_speed = undefined;// 暂停后恢复动画速度
+        // 初始文字位置
+        child.css({
+            left: this_width
+        });
+
+        // 初始动画速度speed
+        var init_speed = (child_width + this_width) / step_len * 1000;
+
+        // 滚动动画
+        function scroll_run(continue_speed) {
+            var speed = (continue_speed == undefined ? init_speed : continue_speed);
+            child.animate({
+                left: -child_width
+            }, speed, "linear", function () {
+                $(this).css({
+                    left: this_width
+                });
+                scroll_run();
+            });
+        }
+
+        // 鼠标动作
+        child.on({
+            mouseenter: function () {
+                var current_left = $(this).position().left;
+                $(this).stop();
+                continue_speed = (-(-child_width - current_left) / step_len) * 1000;
+            },
+            mouseleave: function () {
+                scroll_run(continue_speed);
+                continue_speed = undefined;
+            }
+        });
+        // 启动滚动
+        scroll_run();
+    };
+</script>
+
+
+=======
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_ao1zpuzz87r.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>首页</title>
+    <style>
+        body {
+            height: 100%;
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+            left: 0;
+            top: 0;
+        }
+
+        .all {
+
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0,0,0.3);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+
+        }
+.all_click{
+    position: absolute;
+    top:60%;
+
+    z-index:100;
+    width:2rem;
+    height:2.5rem;
+    opacity: 0;
+
+}
+        .all img {
+
+            height: 100%;
+        }
+
+        .swiper-container-horizontal > .swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+            bottom: -5px;
+        }
+
+        .swiper-container {
+            height: 30%;
+
+        }
+
+        .swiper-pagination-bullet {
+            width: 6px;
+            height: 6px;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #5D910B;
+        }
+
+        .notice-title {
+            color: #fff;
+        }
+
+        .notice-content {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            white-space: nowrap;
+            overflow: hidden;
+            float: left;
+
+        }
+        .notice-text {
+            top: 0.3rem;
+            font-size: 14px;
+            position: absolute;
+        }
+    .help{
+     display: block;
+     top:60%;
+     text-decoration: none;
+     font-weight: bold;
+     position:absolute;
+     color:#6A6A6A;
+     font-size:0.88rem;
+      }
+        .help:active{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <foreach name="banner" item="vo">
+        <div class="swiper-slide">
+            <div class="index_top">
+                <img src="{:cmf_get_image_url($vo.image)}" alt="">
+            </div>
+        </div>
+        </foreach>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
+<div class="index_content" style="background-image: url('__TMPL__/public/assets/imgs/abg.png')">
+    <a class="help" href="{:url('rubbish/order')}">帮</a>
+    <div class="index_content_top">
+        <div class="index-icon notice-title"><i class="iconfont icon-lingdang1"></i></div>
+        <div class="index_roll notice-content">
+            <div class="notice-text">
+                <foreach name="prompt_list" item="vo">
+                <span>{$vo}</span>
+                </foreach>
+            </div>
+        </div>
+    </div>
+    <div class="index_btn">感谢你对环保的支持</div>
+</div>
+<div class="bottom">
+    <a class="bottom_item avitity" href="index.html">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav02@2x.png" alt="">
+        </div>
+        <div>首页</div>
+    </a>
+    <a class="bottom_item" href="market/market_index.html">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav03@2x.png" alt="">
+
+        </div>
+        <div>换宝商城</div>
+    </a>
+    <a class="bottom_item" href="assess.html">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav05@2x.png" alt="">
+
+        </div>
+        <div>评价</div>
+    </a>
+    <a class="bottom_item" href="my.html">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav07@2x.png" alt="">
+        </div>
+        <div>我的</div>
+    </a>
+</div>
+<php>if($is_first==0){</php>
+<div class="all">
+    <div class="all_click"></div>
+    <img src="__TMPL__/public/assets/imgs/lead@2x.png" alt="">
+</div>
+<php>}</php>
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var mySwiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+        })
+        $(".notice-content").textScroll();
+    })
+    //引导点击
+    $('.all_click').click(function () {
+        $(".all").fadeOut(3000);
+    })
+    /**
+     * 从右往左滚动文字
+     * @returns {undefined}
+     */
+    $.fn.textScroll = function () {
+        // 滚动步长(步长越大速度越快)
+        var step_len = 20;
+        var this_obj = $(this);
+        var child = this_obj.children();
+        var this_width = this_obj.width();
+        var child_width = child.width();
+        var continue_speed = undefined;// 暂停后恢复动画速度
+        // 初始文字位置
+        child.css({
+            left: this_width
+        });
+
+        // 初始动画速度speed
+        var init_speed = (child_width + this_width) / step_len * 1000;
+
+        // 滚动动画
+        function scroll_run(continue_speed) {
+            var speed = (continue_speed == undefined ? init_speed : continue_speed);
+            child.animate({
+                left: -child_width
+            }, speed, "linear", function () {
+                $(this).css({
+                    left: this_width
+                });
+                scroll_run();
+            });
+        }
+
+        // 鼠标动作
+        child.on({
+            mouseenter: function () {
+                var current_left = $(this).position().left;
+                $(this).stop();
+                continue_speed = (-(-child_width - current_left) / step_len) * 1000;
+            },
+            mouseleave: function () {
+                scroll_run(continue_speed);
+                continue_speed = undefined;
+            }
+        });
+        // 启动滚动
+        scroll_run();
+    };
+</script>
+
+
+>>>>>>> 9c781cc2cf65170209d1936be01b7acac8aa5bb9
+</html>

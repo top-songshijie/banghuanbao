@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_pzdalqwyzem.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>全部订单</title>
+    <style>
+        body {
+            padding: 1rem 0 0 0;
+        }
+    </style>
+</head>
+<body>
+<div class="order_top">
+    <div class="order_top_cell">全部</div>
+    <div class="order_top_cell">待付款</div>
+    <div class="order_top_cell">待发货</div>
+    <div class="order_top_cell">配送中</div>
+    <div class="order_top_cell">已完成</div>
+</div>
+<div class="order_BOX">
+    <div class="order_box">
+        <volist name="$data.quanbu" id="vo">
+            <a class="order_item" href="{:url('Mine/shop_order_detail',array('order_id'=>$vo['id']))}">
+                <div class="order_item_fri">
+                    <div>订单编号：{$vo.order_sn}</div>
+                    <div class="order_item_fri_txt">
+                        <if condition="$vo.order_status eq 0">
+                            等待付款
+                        <elseif condition="($vo.order_status eq 1) or ($vo.order_status eq 4)" />
+                            等待发货
+                        <elseif condition="$vo.order_status eq 2" />
+                            配送中
+                        <else />
+                            已完成
+                        </if>
+                    </div>
+                </div>
+                <div class="order_item_centent">
+                    <div class="order_item_centent_left"><img src="{$vo.detail.goods_thumb}" alt=""></div>
+                    <div class="order_item_centent_right">
+                        <div class="order_title">{$vo.detail.goods_name}</div>
+                        <div class="attr">{$vo.detail.attvalue_names}</div>
+                        <div class="pro">
+                            <div class="price">￥{$vo.total_price}</div>
+                            <div>数量：{$vo.detail.goods_num}</div>
+                        </div>
+                    </div>
+                </div>
+                <if condition="$vo.order_status eq 0">
+                    <div class="order_item_bottom">
+                        <a class="cancel go_order" href="nu_paydetails.html">去付款</a>
+                        <div class="cancel cancel_order" data-id="{$vo.id}">取消订单</div>
+                    </div>
+                <elseif condition="$vo.order_status eq 2" />
+                    <div class="order_item_bottom">
+                        <a class="cancel go_order shouhuo" data-id="{$vo.id}">确认收货</a>
+                    </div>
+                <else /></if>
+            </a>
+        </volist>
+    </div>
+    <!--待付款-->
+    <div class="order_box" style="display: none">
+        <volist name="$data.daifukuan" id="vo">
+            <a class="order_item" href="{:url('Mine/shop_order_detail',array('order_id'=>$vo['id']))}">
+                <div class="order_item_fri">
+                    <div>订单编号：{$vo.order_sn}</div>
+                    <div class="order_item_fri_txt">等待付款</div>
+                </div>
+                <div class="order_item_centent">
+                    <div class="order_item_centent_left"><img src="{$vo.detail.goods_thumb}" alt=""></div>
+                    <div class="order_item_centent_right">
+                        <div class="order_title">{$vo.detail.goods_name}</div>
+                        <div class="attr">{$vo.detail.attvalue_names}</div>
+                        <div class="pro">
+                            <div class="price">￥{$vo.total_price}</div>
+                            <div>数量：{$vo.detail.goods_num}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order_item_bottom">
+                    <a class="cancel go_order" href="javascript:;" id="pay" data-id="{$vo.id}">去付款</a>
+                    <div class="cancel cancel_order" data-id="{$vo.id}">取消订单</div>
+                </div>
+            </a>
+        </volist>
+    </div>
+    <!--待发货-->
+    <div class="order_box" style="display: none">
+        <volist name="$data.daifahuo" id="vo">
+            <a class="order_item" href="{:url('Mine/shop_order_detail',array('order_id'=>$vo['id']))}">
+                <div class="order_item_fri">
+                    <div>订单编号：{$vo.order_sn}</div>
+                    <div class="order_item_fri_txt">等待发货</div>
+                </div>
+                <div class="order_item_centent">
+                    <div class="order_item_centent_left"><img src="{$vo.detail.goods_thumb}" alt=""></div>
+                    <div class="order_item_centent_right">
+                        <div class="order_title">{$vo.detail.goods_name}</div>
+                        <div class="attr">{$vo.detail.attvalue_names}</div>
+                        <div class="pro">
+                            <div class="price">￥{$vo.total_price}</div>
+                            <div>数量：{$vo.detail.goods_num}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </volist>
+    </div>
+    <!--配送中-->
+    <div class="order_box" style="display: none">
+        <volist name="$data.peisongzhong" id="vo">
+            <a class="order_item" href="{:url('Mine/shop_order_detail',array('order_id'=>$vo['id']))}">
+                <div class="order_item_fri">
+                    <div>订单编号：{$vo.order_sn}</div>
+                    <div class="order_item_fri_txt">配送中</div>
+                </div>
+                <div class="order_item_centent">
+                    <div class="order_item_centent_left"><img src="{$vo.detail.goods_thumb}" alt=""></div>
+                    <div class="order_item_centent_right">
+                        <div class="order_title">{$vo.detail.goods_name}</div>
+                        <div class="attr">{$vo.detail.attvalue_names}</div>
+                        <div class="pro">
+                            <div class="price">￥{$vo.total_price}</div>
+                            <div>数量：{$vo.detail.goods_num}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order_item_bottom">
+                    <a class="cancel go_order shouhuo" data-id="{$vo.id}">确认收货</a>
+                </div>
+            </a>
+        </volist>
+    </div>
+    <!--已完成-->
+    <div class="order_box" style="display: none">
+        <volist name="$data.yiwancheng" id="vo">
+            <a class="order_item" href="{:url('Mine/shop_order_detail',array('order_id'=>$vo['id']))}">
+                <div class="order_item_fri">
+                    <div>订单编号：{$vo.order_sn}</div>
+                    <div class="order_item_fri_txt">已完成</div>
+                </div>
+                <div class="order_item_centent">
+                    <div class="order_item_centent_left"><img src="{$vo.detail.goods_thumb}" alt=""></div>
+                    <div class="order_item_centent_right">
+                        <div class="order_title">{$vo.detail.goods_name}</div>
+                        <div class="attr">{$vo.detail.attvalue_names}</div>
+                        <div class="pro">
+                            <div class="price">￥{$vo.total_price}</div>
+                            <div>数量：{$vo.detail.goods_num}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </volist>
+    </div>
+</div>
+<!--确认收货弹框-->
+<div class="delete_mold" style="display: none">
+    <div class="delete">
+        <div class="iconfont icon-delete2"></div>
+        <div class="delete_title"></div>
+        <div class="if_delete"></div>
+        <div class="delete_btn" data-orderid="" data-type='0'>确认</div>
+    </div>
+</div>
+<!--弹框-->
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+    wx.config({
+        debug: false,
+        appId: "{$signPackage['appId']}",
+        timestamp: "{$signPackage['timestamp']}",
+        nonceStr: "{$signPackage['nonceStr']}",
+        signature: "{$signPackage['signature']}",
+        jsApiList: [
+            'chooseWXPay',
+        ]
+    });
+
+    $(function () {
+        var tab = "{$tab}";
+        $('.order_top_cell').each(function (i) {
+            if(tab == i){
+                $(this).addClass('activity_order').siblings().removeClass('activity_order')
+                var _index=$(this).index();
+                $('.order_BOX .order_box').eq(_index).show().siblings().hide()
+            }
+        })
+    })
+
+    $(function () {
+        $('.order_top .order_top_cell ').click(function () {
+            $(this).addClass('activity_order').siblings().removeClass('activity_order')
+            var _index=$(this).index();
+            $('.order_BOX .order_box').eq(_index).show().siblings().hide()
+        })
+    })
+
+//    确认收货
+    $('.shouhuo').click(function () {
+        $('.delete_title').html('确认收货');
+        $('.if_delete').html('是否确认收货？');
+        var order_id = $(this).data('id');
+        $('.delete_btn').attr('data-orderid',order_id);
+        $('.delete_btn').attr('data-type',1);
+        $('.delete_mold').show();
+    })
+    //    取消订单
+    $('.cancel_order').click(function () {
+        $('.delete_title').html('取消订单');
+        $('.if_delete').html('是否确认取消？');
+        var order_id = $(this).data('id');
+        $('.delete_btn').attr('data-orderid',order_id);
+        $('.delete_mold').show();
+    })
+    $('.delete_mold').click(function () {
+        $(this).hide();
+    })
+    $('.delete').click(function (e) {
+        e.stopPropagation();
+    })
+    $('.delete .icon-delete2').click(function () {
+        $('.delete_mold').hide();
+    })
+    //确认收货，取消订单
+    $('.delete_btn').click(function () {
+        order_id = $(this).attr('data-orderid');
+        type = $(this).attr('data-type');
+        if(type == 1){
+            //            确认收货
+            url = "{:url('Goodsorder/confirm_shouhuo')}"
+        }else{
+            //            取消订单
+            url = "{:url('Goodsorder/cancel_order')}";
+        }
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:{
+                "order_id":order_id,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    location.href = "{:url('mine/shop_order_list')}"
+                }
+            }
+        })
+    })
+
+    //去支付
+    $('#pay').click(function () {
+        //goods_order表id
+        var id = $(this).attr('data-id')
+        $.ajax({
+            type:"POST",
+            url:"{:url('Goodsorder/topay')}",
+            data:{
+                "id":id,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    wxpaydata = JSON.parse(data.data)
+//                    console.log(wxpaydata)
+                    wxpay(wxpaydata)
+                }else{
+                    toast(data.msg)
+                }
+            }
+        })
+    })
+
+    //微信支付公用方法
+    function wxpay(wxpaydata) {
+        wx.chooseWXPay({
+            timestamp: wxpaydata.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字
+            nonceStr: wxpaydata.nonceStr, // 支付签名随机串，不长于 32 位
+            package: wxpaydata.package, //
+            signType: wxpaydata.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            paySign: wxpaydata.paySign, // 支付签名
+            success: function (res) {
+                setTimeout(function () {
+                    location.href = "{:url('Mine/shop_order_list',array('tab'=>2))}";
+                }, 1000 )
+            }
+        });
+    }
+</script>
+</body>
+</html>

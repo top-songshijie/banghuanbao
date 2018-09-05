@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_shjz3zdinbs.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>商品详情</title>
+    <style>
+        body{
+            padding:0 0 1rem 0;
+        }
+        .swiper_item{
+            position: absolute;
+            bottom:0.1rem;
+            right:0.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 0.4rem;
+            line-height: 0.4rem;
+            min-width:0.8rem;
+            box-sizing: border-box;
+            background-color:#5B5B5B;
+            border-radius: 0.05rem;
+            z-index:10;
+        }
+        .swiper-pagination-fraction{
+            bottom: 0px;
+            right: 0;
+            width: 100%;
+            font-size: 0.24rem;
+            color:#fff;
+        }
+        .swiper-pagination {
+            display: inline-block;
+            position: absolute;
+            right:0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-transition: .3s;
+            -moz-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+            -webkit-transform: translate3d(0,0,0);
+            -ms-transform: translate3d(0,0,0);
+            -o-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
+            z-index: 10;
+        }
+        .hb_pro_bottom{
+
+            position: fixed;
+            bottom:0;
+            left:0;
+            width:100%;
+            height:1rem;
+            line-height: 1rem;
+            text-align: center;
+            color:#fff;
+            background-color: #61B62F;
+           font-size:0.3rem;
+        }
+        .hb_pro_bottom a{
+            text-decoration: none;
+            color:#fff;
+            font-size:0.3rem;
+        }
+        .hb_pro_bottom a:active{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <volist name="$goods_info.goods_banner" id="vo">
+        <div class="swiper-slide">
+            <div class="pro_top">
+                <img src="{$vo}" alt="">
+            </div>
+        </div>
+        </volist>
+    </div>
+    <div class="swiper_item">
+        <div class="swiper-pagination"></div>
+    </div>
+
+</div>
+<!--限时抢购-->
+
+<eq name="goods_info.if_tejia" value="1">
+    <div class="xs_box">
+        <div class="market_nav_title ">
+            <div>截止到({$xsinfo.show_date})</div>
+            <div class="time_endbox">距结束 <span class="time_end " id="end_hour">00</span> : <span class="time_end " id="end_minute">00</span> : <span class="time_end " id="end_seconds">00</span></div>
+        </div>
+    </div>
+</eq>
+
+<div class="pro_attrbox">
+    <div>{$goods_info.goods_name}</div>
+    <div class="pro_content">
+        {$goods_info.shortcontent}
+    </div>
+    <div><span class="hprice pro_jia">￥{$goods_info.low_price}</span> <span class="yprice">￥{$goods_info.goods_ago_price}</span></div>
+</div>
+<div class="bottom_items pro_nav">
+    <div class="bottom_item_left">
+        <div class="pro_attrname">规格属性</div>
+        <div class="sttr_de"></div>
+    </div>
+    <div class="bottom_item_right attr_right">
+        <div class="iconfont icon-common-jinru-copy"></div>
+    </div>
+</div>
+<div class="choose_attr">
+    <span class=" attr_span activity_span">图文详情</span>
+    <span class="attr_span">商品评价</span>
+</div>
+<div class="choose_box">
+    <div class="tab" >
+        <div class="tab_img">
+            {$goods_info.content}
+        </div>
+    </div>
+    <div class="tab" style="display: none">
+        <div class="assess">
+            <volist name="goods_comment_list" id="vo">
+                <div class="assess_item">
+                    <div class="assess_item_left">
+                        <img src="{$vo.avatar}" alt="">
+                    </div>
+                    <div class="assess_item_right">
+                        <div class="assess_tetle">
+                            <div>{$vo.user_nickname}</div>
+                            <div class="assess_time">{$vo.c_create_time}</div>
+                        </div>
+                        <div class="star_box">
+                            <for start="0" end="$vo['score']">
+                                <div class="iconfont icon-shoucang1 avitity"></div>
+                            </for>
+                        </div>
+                        <div class="assess_content">
+                            {$vo.content}
+                        </div>
+
+                    </div>
+                </div>
+            </volist>
+        </div>
+    </div>
+</div>
+
+<if condition="$goods_info.if_only_exchange eq 1">
+    <!--换购商品-->
+    <div class="hb_pro_bottom" id="buy">
+    <a>马上换购</a>
+    </div>
+<else />
+    <div class="pro_bottom">
+        <div class="pro_bttom_left">
+            <if condition="$car_num eq 0">
+                <span class="pint"></span>
+                <else />
+                <span class="pint">{$car_num}</span>
+            </if>
+            <div class="iconbox">
+                <i class="iconfont icon-gouwuche"></i>
+            </div>
+            <div>购物车</div>
+        </div>
+        <if condition="$if_mw eq 1">
+            <div class="pro_bttom_right">
+                商品已售完
+            </div>
+            <else />
+            <div class="pro_bttom_right" >
+                <div class="pro_btn gw">加入购物车</div>
+                <a class="pro_btn gm" id="buy">马上购买</a>
+            </div>
+        </if>
+    </div>
+</if>
+<div class="attr_mold" >
+    <div class="attr_mini" >
+        <div class="attr_minitop">
+            <div class="attr_miniimg">
+                <img src="__TMPL__/public/assets/imgs/abg02.png" alt="">
+            </div>
+            <div class="attr_minitxt">
+                <div><span class="hprice pro_jia ">￥ <text class="pro_hjia">{$goods_info.low_price}</text></span> <span class="yprice">￥<text class="pro_yuan">{$goods_info.goods_ago_price}</text></span></div>
+                <div class="minichoose_attr">请选择商品规格</div>
+            </div>
+        </div>
+        <volist name="$goods_info.goods_attkey" id="vo">
+            <div class="color_box">
+                <div class="color_txt" data-attkeyid="{$vo.id}" data-nowprice="{$vo.goods_attkey_now_price}" data-agoprice="{$vo.goods_attkey_ago_price}">{$vo.attkey_name}</div>
+                <div class="cm_span">
+                    <volist name="vo.goods_attvalue" id="vv">
+                        <if condition="($vv.is_select eq 1) and ($vv.attvalue_name eq '默认')">
+                            <span class="span_color activity_color" data-attvalid="{$vv.id}" data-nowprice="{$vv.goods_attvalue_now_price}" data-agoprice="{$vv.goods_attvalue_ago_price}">{$vv.attvalue_name}</span>
+                            <else />
+                            <span class="span_color" data-attvalid="{$vv.id}" data-nowprice="{$vv.goods_attvalue_now_price}" data-agoprice="{$vv.goods_attvalue_ago_price}">{$vv.attvalue_name}</span>
+                        </if>
+                    </volist>
+                </div>
+            </div>
+        </volist>
+        <div class="attr_numbox">
+            <div class="color_txt cm_txt">数量</div>
+            <div class="num_box">
+                <div class="iconfont icon-jian"></div>
+                <div class="input_numbox"><input type="number" value="1" class="input_val" maxnum="100" minnum="1"></div>
+                <div class=" iconfont icon-jia"></div>
+            </div>
+        </div>
+        <div class="attr_minibtn">确定</div>
+    </div>
+</div>
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay: 2000,//可选选项，自动滑动
+            pagination : '.swiper-pagination',
+            paginationType : 'fraction',
+        })
+        var attrstring=['请选择商品规格',''];
+        $('.choose_attr .attr_span ').click(function () {
+            $(this).addClass('activity_span').siblings().removeClass('activity_span');
+            var _index=$(this).index();
+            $('.choose_box .tab').eq(_index).show().siblings().hide();
+        })
+        $('.pro_nav').click(function () {
+            iscar = 0;
+            var price="{$goods_info.low_price}";
+            var yprice="{$goods_info.goods_ago_price}";
+//            $('.pro_hjia').html(parseInt(price) + parseInt($('.color_txt').attr('data-nowprice')));
+//            $('.pro_yuan').html(parseInt(yprice) + parseInt($('.color_txt').attr('data-agoprice')));
+            $('.pro_hjia').html(parseInt(price));
+            $('.pro_yuan').html(parseInt(yprice));
+            $('.attr_mold').show();
+            $('.attr_mini').show().animate({'bottom':0},"slow");
+        });
+
+        $('.attr_mold').click(function () {
+            $('.attr_mini').animate({'bottom':-100+'%'},"slow");
+           $('.attr_mold').fadeOut();
+
+        })
+        $('.attr_minibtn').click(function () {
+            $('.attr_mini').animate({'bottom':-100+'%'},"slow");
+            $('.attr_mold').fadeOut();
+            console.log(iscar)
+            if(iscar == 1){
+                addcar();
+            }
+        })
+        $('.attr_mini').click(function (e) {
+            e.stopPropagation();
+        })
+        //商品数量减
+        $('.icon-jian').click(function () {
+            var t=$(this);
+            var inputbox=t.siblings('.input_numbox');
+            var num=inputbox.find('.input_val').val()-1;
+            if(num<1){
+                $('.weui-icon-success-no-circle').hide();
+                toast('商品数量不能少啦')
+                inputbox.find('.input_val').val(num+1);
+            }else{
+                inputbox.find('.input_val').val(num);
+            }
+        })
+        //商品数量加
+        $('.icon-jia').click(function () {
+            var t=$(this);
+            var inputbox=t.siblings('.input_numbox');
+            var num=parseInt(inputbox.find('.input_val').val()) + 1;
+            var maxnum=parseInt(inputbox.find('.input_val').attr('maxnum'));
+            if(num > maxnum){
+                $('.weui-icon-success-no-circle').hide();
+                toast('商品库存不足')
+                inputbox.find('.input_val').val(num-1);
+            }else{
+                inputbox.find('.input_val').val(num);
+            }
+        })
+        $('.input_val').change(function () {
+            var num=parseInt($(this).val());
+            var maxnum=parseInt($(this).attr('maxnum'));
+            if(num >= maxnum){
+                $('.weui-icon-success-no-circle').hide();
+                toast('商品库存不足')
+                $(this).val(maxnum);
+            }else{
+                $(this).val(num);
+            }
+        })
+//        $('.span_color').click(function () {
+//
+//            attrstring[0] =$(this).html();
+//            console.log( attrstring[0]+attrstring[1] );
+//            $('.minichoose_attr').html(attrstring[0]+attrstring[1]);
+//
+//            $(this).addClass('activity_color').siblings().removeClass('activity_color');
+//        })
+        var  now_price = {$goods_info.goods_now_price};
+        var  yuan_price = {$goods_info.goods_ago_price};
+        $('.span_color').click(function () {
+            attrstring[1] =$(this).html();
+            console.log(attrstring[0]+attrstring[1]);
+            $('.minichoose_attr').html(attrstring[0]+attrstring[1]);
+
+            $(this).addClass('activity_color').siblings().removeClass('activity_color');
+            var temp_price=0;
+            var temp_yprice=0;
+            $(".cm_span .activity_color").each(function () {
+                temp_price +=parseInt($(this).attr('data-nowprice'));
+                temp_yprice +=parseInt($(this).attr('data-agoprice'));
+            })
+            var price=parseInt(temp_price) +parseInt(now_price);
+            var yprice=parseInt(temp_yprice) +parseInt(yuan_price);
+            $('.pro_hjia').html(price);
+            $('.pro_yuan').html(yprice)
+        })
+
+        $('.span_color').click(function () {
+            attrstring[0]=''
+            $(this).addClass('activity_color').siblings().removeClass('activity_color');
+            $('.color_box .cm_span .activity_color').each(function () {
+                attrstring[0] += $(this).html();
+            })
+
+            $('.minichoose_attr').html(attrstring[0]);
+        })
+
+        $('.gw').click(function () {
+            iscar = 1;
+            addcar();
+       })
+
+        //加入购物车方法
+        function addcar() {
+            var attr_ids='';
+            $('.color_box .cm_span .activity_color').each(function () {
+                attr_ids +=',' + $(this).attr('data-attvalid');
+            })
+            var goods_id = "{$goods_info.id}";
+            var goods_attvalue_id = attr_ids;
+            var num = $('.input_val').val();
+            $.ajax({
+                type:"POST",
+                url:"{:url('Goodsorder/put_car')}",
+                data:{
+                    'goods_id':goods_id,
+                    'goods_attvalue_id':goods_attvalue_id,
+                    'num':num,
+                },
+                dataType:'json',
+                success:function (data) {
+                    if(data.code == 1){
+                        $('.pint').html(data.data);
+                        $('.weui-icon-success-no-circle').hide();
+                        $('.weui-toast').css('padding','0.7rem 0.5rem');
+                        $('.weui-toast p').css('font-size','0.32rem');
+                        toast(data.msg);
+                    }else{
+                        $('.attr_mold').show();
+                        $('.attr_mini').show().animate({'bottom':0},"slow");
+                    }
+                }
+            })
+        }
+
+        $('.attr_minibtn').click(function () {
+            attrstring[1]=$('.input_val').val();
+            var data_attvalid =$('.span_box .activity_color').attr("data-attvalid");
+            var data_attrcc =$(' .cm_span .activity_color').attr('data-attrcc');
+            $('.sttr_de').html( attrstring[0]+ "," +attrstring[1]+"件");
+
+        })
+
+    })
+
+    $('.pro_bttom_left').click(function () {
+        window.location.href = "{:url('Shop/car')}"
+    })
+    
+    $('#buy').click(function () {
+        iscar = 0;
+        var attr_ids='';
+        $('.color_box .cm_span .activity_color').each(function () {
+            attr_ids +=',' + $(this).attr('data-attvalid');
+        })
+        var goods_id = "{$goods_info.id}";
+        var goods_attvalue_id = attr_ids;
+        var num = $('.input_val').val();
+        $.ajax({
+            type:"POST",
+            url:"{:url('Goodsorder/shop_if_default_address')}",
+            data:{
+                "goods_id":goods_id,
+                "goods_attvalue_id":goods_attvalue_id,
+                "num":num
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    window.location.href = data.data;
+                }else{
+                    $('.attr_mold').show();
+                    $('.attr_mini').show().animate({'bottom':0},"slow");
+//                    toast(data.msg)
+                }
+            }
+        })
+    })
+    //倒计时
+    var now = new Date();
+//    var timestamp3 =  now.setDate(now.getDate()+1);
+    var timestamp3 =  "{$xsinfo.end_time}";
+    timeout(timestamp3);
+    function timeout(params){
+        var active_time=parseInt(params);
+        var endtime = Date.parse(new Date(active_time));
+        var _this=$(this);
+        var init = setInterval(function () {
+            var nowtime = Date.parse(new Date())
+            var time = endtime - nowtime;
+            if (time > 0) {
+                var hour = parseInt(time / 1000 / 60 / 60);
+                var minute = parseInt(time / 1000 / 60 % 60);
+                var seconds = parseInt(time / 1000 % 60);
+                if (hour == 0 && minute == 0 && seconds == 0) {
+                } else {
+                    $('#end_hour').text(add0(hour));
+                    $('#end_minute').text(add0(minute));
+                    $('#end_seconds').text(add0(seconds))
+                }
+            } else {
+                console.log("end");
+            }
+        }, 1000);
+    }
+    function add0(obj) {
+        if (obj < 10) {
+            return '0' + obj
+        } else {
+            return obj
+        }
+    }
+
+</script>
+</body>
+
+</html>

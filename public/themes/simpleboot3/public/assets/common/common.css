@@ -1,0 +1,427 @@
+<<<<<<< HEAD
+* {
+    -webkit-tap-highlight-color: transparent !important;
+    /*font-family:"Microsoft YaHei UI",'PingFangSC-Regular';*/
+    /*font-family: 'PingFangSC-Regular';*/
+}
+
+@font-face {
+    font-family: 'PingFangSC-Regular';
+    src: url("../fonts/PingFangRegular.ttf");
+}
+
+body {
+    margin: 0;
+    padding:0;
+    background-color: #f7f7f7;
+
+}
+
+input {
+    border: none;
+    outline: none;
+    background: none;
+    line-height: 100%;
+}
+
+textarea {
+    outline: none;
+
+}
+
+textarea:hover {
+    outline: none;
+
+}
+
+input:hover {
+    outline: none;
+
+}
+select {
+
+}
+select option{
+    color:#999;
+}
+select:hover{
+    outline:none;
+}
+input::placeholder {
+    color: #222
+}
+
+.weui-picker__item {
+    font-size: 0.3rem;
+}
+
+.weui-picker__hd {
+    width: auto !important;
+    font-size: 0.3rem;
+}
+
+.weui-picker__action {
+    display: block;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    color: rgba(0, 153, 204, 1);
+}
+
+.weui-toast {
+    position: fixed;
+    z-index: 5000;
+    padding: 0.2rem 0.25rem;
+    top: 180px;
+    left: 0;
+    right: 0;
+    width: 4rem;
+    margin: 0 auto;
+    /*margin-left: -1rem;*/
+    background: rgba(17, 17, 17, 0.7);
+    text-align: center;
+    border-radius: 5px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.weui-dialog__title {
+    font-weight: 500;
+}
+
+.weui-dialog__hd {
+    padding: 0rem 0rem 0rem !important;
+}
+
+.weui-skin_android .weui-dialog__hd {
+    text-align: left;
+    padding: 0rem .6rem 0rem !important;
+}
+
+.weui-skin_android .weui-dialog__title {
+    font-size: .38rem;
+    font-family: PingFang-SC-Medium;
+    color: rgba(0, 0, 0, 1);
+}
+
+.weui-skin_android .weui-dialog__bd {
+    color: #999999;
+    padding: 0rem .6rem .6rem;
+    font-size: .3rem;
+    text-align: left;
+}
+
+.weui-skin_android .weui-dialog__btn {
+    color: rgba(51, 51, 51, 1);
+}
+
+.weui-toast__content {
+    font-size: .3rem;
+}
+
+.weui-picker__item {
+    font-size: 0.3rem;
+}
+
+.weui-picker__hd {
+    width: auto !important;
+    font-size: 0.3rem;
+}
+
+.weui-picker__action {
+    display: block;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    color: rgba(247, 123, 32, 1);
+}
+
+.weui-loading {
+    width: 0.6rem;
+    height: 0.6rem;
+}
+/*底部导航*/
+.bottom{
+    width:100%;
+    box-sizing: border-box;
+    position: fixed;
+    z-index:150;
+    bottom:0;
+    left:0;
+    background: #fff;
+    height:1.1rem;
+    display: flex;
+    padding:0.1rem 0 ;
+    align-items: center;
+    justify-content: space-around;
+
+}
+.bottom_item{
+   /*margin:0.15rem;*/
+    font-size:0.2rem;
+    color:#999;
+    display: flex;
+    text-decoration: none;
+    flex-direction: column;
+    align-items: center;
+}
+.bottom_item:active{
+    text-decoration: none;
+}
+.bottom_img{
+    /*margin:0 0 0.03rem 0;*/
+    width:0.45rem;
+    height:0.45rem;
+    overflow: hidden;
+}
+.bottom_img img{
+    width:100%;
+}
+.flex-c{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.roll_chice .iconfont{
+    font-size: 0.25rem;
+    color:#fff;
+}
+.comfirn_content .iconfont {
+    font-size: 0.6rem;
+}
+.btn{
+    display: block;
+    text-decoration: none;
+    width:6.68rem;
+    height:0.88rem;
+    line-height: 0.88rem;
+    text-align: center;
+    border-radius: 0.05rem;
+    background-color: #61B62F;
+    color:#fff;
+    font-size:0.32rem;
+}
+.btn:active{
+    opacity: 0.7;
+    text-decoration: none;
+}
+.text-green{
+    color:#61B62f;
+}
+=======
+* {
+    -webkit-tap-highlight-color: transparent !important;
+    /*font-family:"Microsoft YaHei UI",'PingFangSC-Regular';*/
+    /*font-family: 'PingFangSC-Regular';*/
+}
+
+@font-face {
+    font-family: 'PingFangSC-Regular';
+    src: url("../fonts/PingFangRegular.ttf");
+}
+
+body {
+    margin: 0;
+    padding:0;
+    background-color: #f7f7f7;
+
+}
+
+input {
+    border: none;
+    outline: none;
+    background: none;
+    line-height: 100%;
+}
+
+textarea {
+    outline: none;
+
+}
+
+textarea:hover {
+    outline: none;
+
+}
+
+input:hover {
+    outline: none;
+
+}
+select {
+
+}
+select option{
+    color:#999;
+}
+select:hover{
+    outline:none;
+}
+input::placeholder {
+    color: #222
+}
+
+.weui-picker__item {
+    font-size: 0.3rem;
+}
+
+.weui-picker__hd {
+    width: auto !important;
+    font-size: 0.3rem;
+}
+
+.weui-picker__action {
+    display: block;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    color: rgba(0, 153, 204, 1);
+}
+
+.weui-toast {
+    position: fixed;
+    z-index: 5000;
+    padding: 0.2rem 0.25rem;
+    top: 180px;
+    left: 0;
+    right: 0;
+    width: 4rem;
+    margin: 0 auto;
+    /*margin-left: -1rem;*/
+    background: rgba(17, 17, 17, 0.7);
+    text-align: center;
+    border-radius: 5px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.weui-dialog__title {
+    font-weight: 500;
+}
+
+.weui-dialog__hd {
+    padding: 0rem 0rem 0rem !important;
+}
+
+.weui-skin_android .weui-dialog__hd {
+    text-align: left;
+    padding: 0rem .6rem 0rem !important;
+}
+
+.weui-skin_android .weui-dialog__title {
+    font-size: .38rem;
+    font-family: PingFang-SC-Medium;
+    color: rgba(0, 0, 0, 1);
+}
+
+.weui-skin_android .weui-dialog__bd {
+    color: #999999;
+    padding: 0rem .6rem .6rem;
+    font-size: .3rem;
+    text-align: left;
+}
+
+.weui-skin_android .weui-dialog__btn {
+    color: rgba(51, 51, 51, 1);
+}
+
+.weui-toast__content {
+    font-size: .3rem;
+}
+
+.weui-picker__item {
+    font-size: 0.3rem;
+}
+
+.weui-picker__hd {
+    width: auto !important;
+    font-size: 0.3rem;
+}
+
+.weui-picker__action {
+    display: block;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    color: rgba(247, 123, 32, 1);
+}
+
+.weui-loading {
+    width: 0.6rem;
+    height: 0.6rem;
+}
+/*底部导航*/
+.bottom{
+    width:100%;
+    box-sizing: border-box;
+    position: fixed;
+    z-index:150;
+    bottom:0;
+    left:0;
+    background: #fff;
+    height:1.1rem;
+    display: flex;
+    padding:0.1rem 0 ;
+    align-items: center;
+    justify-content: space-around;
+
+}
+.bottom_item{
+   /*margin:0.15rem;*/
+    font-size:0.2rem;
+    color:#999;
+    display: flex;
+    text-decoration: none;
+    flex-direction: column;
+    align-items: center;
+}
+.bottom_item:active{
+    text-decoration: none;
+}
+.bottom_img{
+    /*margin:0 0 0.03rem 0;*/
+    width:0.45rem;
+    height:0.45rem;
+    overflow: hidden;
+}
+.bottom_img img{
+    width:100%;
+}
+.flex-c{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.roll_chice .iconfont{
+    font-size: 0.25rem;
+    color:#fff;
+}
+.comfirn_content .iconfont {
+    font-size: 0.6rem;
+}
+.btn{
+    display: block;
+    text-decoration: none;
+    width:6.68rem;
+    height:0.88rem;
+    line-height: 0.88rem;
+    text-align: center;
+    border-radius: 0.05rem;
+    background-color: #61B62F;
+    color:#fff;
+    font-size:0.32rem;
+}
+.btn:active{
+    opacity: 0.7;
+    text-decoration: none;
+}
+.text-green{
+    color:#61B62f;
+}
+>>>>>>> 9c781cc2cf65170209d1936be01b7acac8aa5bb9

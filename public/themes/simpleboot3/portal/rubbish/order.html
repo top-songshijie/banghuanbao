@@ -1,0 +1,491 @@
+<<<<<<< HEAD
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_pzdalqwyzem.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>确认订单</title>
+    <style>
+        body {
+            padding: 0 0 1rem 0;
+        }
+
+        .activity_roll .comfirm_left .roll_chice {
+            background-color: #61B62F;
+            border: 0.02rem solid #61B62F !important;
+        }
+        .activity_roll {
+             background-color: #fff;
+            border:none !important;
+            border-bottom: 0.02rem solid #f6f6f6 !important;
+        }
+    </style>
+</head>
+<body>
+<foreach name="rubbish" item="vo">
+<div class="comfirm_item_box">
+    <php>if(in_array($vo['id'],$ids)){</php>
+    <div class="comfirm_item  activity_roll" item_id="{$vo.id}">
+        <php>}else{</php>
+        <div class="comfirm_item" item_id="{$vo.id}">
+            <php>}</php>
+        <div class="comfirm_left">
+            <div class="roll_chice flex-c ">
+                <div class="iconfont icon-bianjiICONCopy-"></div>
+            </div>
+            <div class="comfirn_content flex-c">
+                <php>switch($vo['id']){
+                    case 1:</php>
+                <div class="iconfont icon-yifu"></div><php>
+                    break;
+                    case 2:</php>
+                <div class="iconfont icon-xiangjiaosuliao"></div><php>
+                    break;
+                    case 3:</php>
+                <div class="iconfont icon-boliweiwai"></div><php>
+                    break;
+                    case 4:</php>
+                <div class="iconfont icon-zhizhang"></div><php>
+                    break;
+                    case 5:</php>
+                <div class="iconfont icon-guijinshuzhongshou"></div><php>
+                    break;
+                    case 6:</php>
+                <div class="iconfont icon-tubiao-chatou"></div><php>
+                    break;
+                    }</php>
+            </div>
+            <div>{$vo.rubbish_name}</div>
+        </div>
+        <div class="comfirm_right"><span>￥{$vo.rubbish_price}/kg</span></div>
+    </div>
+    </div>
+</div>
+</foreach>
+<div class="cue">温馨提示：{$wxticontent}</div>
+<div class="bottom_items_box">
+    <div class="bottom_items choosetime">
+        <div class="bottom_item_left">
+            <div class="iconfont icon-shijian"></div>
+            <div>上门时间</div>
+        </div>
+        <div class="bottom_item_right">
+            <div class="text-no time">{$time}</div>
+            <div class="iconfont icon-common-jinru-copy"></div>
+        </div>
+    </div>
+    <div class="bottom_items chooseaddress">
+        <div class="bottom_item_left">
+            <div class="iconfont icon-location"></div>
+            <!--<div >添加地址</div>-->
+            <div id="address">
+                <div class="address"><span class="village"> {$address.village}</span><span class="detail_address">{$address.detail_address}</span> </div>
+                <div class="items_name"><span class="comfirm_name">{$address.name}</span><span class="tel">{$address.mobile}</span></div>
+            </div>
+        </div>
+        <div class="bottom_item_right">
+            <div class="text-no text-address"></div>
+            <div class="iconfont icon-common-jinru-copy"></div>
+        </div>
+    </div>
+</div>
+<div class="comfirm_btn">一键下单</div>
+
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var select ={$select};//选中数组id
+        var result = {};//最后的结果
+        $('.comfirm_btn').click(function () {
+            result.ids = select;
+            result.time =  $('.time').html();
+            result.village = $('.village').html();
+            result.detail_address = $('.detail_address').html();
+            result.name = $('.comfirm_name').html()
+            result.tel = $('.tel').html();
+            //var result_str=JSON.stringify(result);
+//            console.log(result.time);
+            $.ajax({
+                type:"POST",
+                url:"{:url('rubbish/put_order')}",
+                data:{
+                    "ids":result.ids,
+                    "time":result.time,
+                    "village":result.village,
+                    "detail_address":result.detail_address,
+                    "name":result.name,
+                    "tel":result.tel
+                },
+                dataType:'json',
+                success:function (data) {
+                    if (data.code==1){
+                        toast('下单成功')
+                        setTimeout(function () {
+                            location.href = "{:url('Mine/index')}"
+                        },2000)
+                    }else{
+                        toast(data.msg)
+                    }
+                }
+            })
+        })
+
+        $('.chooseaddress').click(function () {
+            result.ids = select;
+            result.time =  $('.time').html();
+            //console.log(result);
+            $.ajax({
+                type:"POST",
+                url:"{:url('rubbish/session')}",
+                dataType:"json",
+                data:{
+                    "ids":result.ids,
+                    "time":result.time
+                },
+                success:function (data) {
+                    if (data.data==1){
+                        window.location.href="{:url('rubbish/get_address')}"
+                    }else {
+                        toast("下单失败");
+                    }
+                }
+            })
+
+        })
+        $('.comfirm_item').click(function () {
+            var item_id = $(this).attr("item_id")
+            if ($(this).hasClass('activity_roll')) {
+                $(this).removeClass('activity_roll')
+                select.splice($.inArray(item_id, select), 1);
+            } else {
+                $(this).addClass('activity_roll')
+                select.push(item_id);
+            }
+        })
+
+        var all_date = {$all_date};
+        var all_date_picker=[];
+        for(var i in all_date){
+            all_date_picker.push({
+                label:all_date[i],
+                value:all_date[i]
+            })
+        }
+        $('.choosetime').click(function (event) {
+            var _this = this;
+            weui.picker(all_date_picker, {
+                onChange: function(result) {
+                },
+                onConfirm: function(result) {
+                    $('.time').html(result[0].label);
+                    $('.time').removeClass('text-no');
+
+                }
+            });
+
+        });
+
+        $('.chooseaddress').click(function () {
+            $('.text-address').hide();
+        })
+
+
+    })
+</script>
+=======
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_pzdalqwyzem.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>确认订单</title>
+    <style>
+        body {
+            padding: 0 0 1rem 0;
+        }
+
+        .activity_roll .comfirm_left .roll_chice {
+            background-color: #61B62F;
+            border: 0.02rem solid #61B62F !important;
+        }
+    </style>
+</head>
+<body>
+<foreach name="rubbish" item="vo">
+<div class="comfirm_item_box">
+    <php>if(in_array($vo['id'],$ids)){</php>
+    <div class="comfirm_item  activity_roll" item_id="{$vo.id}">
+        <php>}else{</php>
+        <div class="comfirm_item" item_id="{$vo.id}">
+            <php>}</php>
+        <div class="comfirm_left">
+            <div class="roll_chice flex-c ">
+                <div class="iconfont icon-bianjiICONCopy-"></div>
+            </div>
+            <div class="comfirn_content flex-c">
+                <php>switch($vo['id']){
+                    case 1:</php>
+                <div class="iconfont icon-yifu"></div><php>
+                    break;
+                    case 2:</php>
+                <div class="iconfont icon-xiangjiaosuliao"></div><php>
+                    break;
+                    case 3:</php>
+                <div class="iconfont icon-boliweiwai"></div><php>
+                    break;
+                    case 4:</php>
+                <div class="iconfont icon-zhizhang"></div><php>
+                    break;
+                    case 5:</php>
+                <div class="iconfont icon-guijinshuzhongshou"></div><php>
+                    break;
+                    case 6:</php>
+                <div class="iconfont icon-tubiao-chatou"></div><php>
+                    break;
+                    }</php>
+            </div>
+            <div>{$vo.rubbish_name}</div>
+        </div>
+        <div class="comfirm_right"><span>￥{$vo.rubbish_price}/kg</span></div>
+    </div>
+</div>
+</foreach>
+<div class="cue">温馨提示：最低回收重量为 <span> 10 </span>kg</div>
+<div class="bottom_items_box">
+    <div class="bottom_items choosetime">
+        <div class="bottom_item_left">
+            <div class="iconfont icon-shijian"></div>
+            <div>上门时间</div>
+        </div>
+        <div class="bottom_item_right">
+            <div class="text-no time">{$time}</div>
+            <div class="iconfont icon-common-jinru-copy"></div>
+        </div>
+    </div>
+    <div class="bottom_items chooseaddress">
+        <div class="bottom_item_left">
+            <div class="iconfont icon-location"></div>
+            <!--<div >添加地址</div>-->
+            <div id="address">
+                <div class="address"><span class="village"> {$address.village}</span><span class="detail_address">{$address.detail_address}</span> </div>
+                <div class="items_name"><span class="comfirm_name">{$address.name}</span><span class="tel">{$address.mobile}</span></div>
+            </div>
+        </div>
+        <div class="bottom_item_right">
+            <div class="text-no text-address"></div>
+            <div class="iconfont icon-common-jinru-copy"></div>
+        </div>
+    </div>
+</div>
+<div class="comfirm_btn">一键下单</div>
+
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var select ={$select};//选中数组id
+        var result = {};//最后的结果
+        $('.comfirm_btn').click(function () {
+            result.ids = select;
+            result.time =  $('.time').html();
+            result.village = $('.village').html();
+            result.detail_address = $('.detail_address').html();
+            result.name = $('.comfirm_name').html()
+            result.tel = $('.tel').html();
+            //var result_str=JSON.stringify(result);
+            //console.log(result.ids);
+            $.ajax({
+                type:"POST",
+                url:"{:url('rubbish/put_order')}",
+                data:{
+                    "ids":result.ids,
+                    "time":result.time,
+                    "village":result.village,
+                    "detail_address":result.detail_address,
+                    "name":result.name,
+                    "tel":result.tel
+                },
+                dataType:'json',
+                success:function (data) {
+                    if (data.data==1){
+                        window.location.href="{:url('rubbish/index')}"
+                    }
+                }
+            })
+        })
+
+        $('.chooseaddress').click(function () {
+            result.ids = select;
+            result.time =  $('.time').html();
+            //console.log(result);
+            $.ajax({
+                type:"POST",
+                url:"{:url('rubbish/session')}",
+                dataType:"json",
+                data:{
+                    "ids":result.ids,
+                    "time":result.time
+                },
+                success:function (data) {
+                    if (data.data==1){
+                        toast("下单成功");
+                        window.location.href="{:url('rubbish/get_address')}"
+                    }else {
+                        toast("下单失败");
+                    }
+                }
+            })
+
+        })
+        $('.comfirm_item').click(function () {
+            var item_id = $(this).attr("item_id")
+            if ($(this).hasClass('activity_roll')) {
+                $(this).removeClass('activity_roll')
+                select.splice($.inArray(item_id, select), 1);
+            } else {
+                $(this).addClass('activity_roll')
+                select.push(item_id);
+            }
+        })
+        var a='';
+        var mydate = new Date();
+        var endtimeList=[];
+        var timevalue=[];
+        var timeList = {$interval};
+        var timeListall ={$futurData};
+        $('.choosetime').click(function (event) {
+            var _this = this;
+            weui.datePicker({
+                start: new Date(),
+                end: 2030,
+                defaultValue: [new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()],
+                onConfirm: function (result) {
+                    a=result[0].value+'-'+result[1].value+'-'+result[2].value;
+//                    console.log(diy_time(a,mydate));
+                    if(diy_time(a,mydate) >0){
+                        timevalue=[];
+                        endtimeList=timeList;
+                    }else{
+                        timevalue=[];
+                        endtimeList=timeListall;
+                    }
+                    function diy_time(time1,time2){
+                        time1 = Date.parse(new Date(time1));
+                        time2 = Date.parse(new Date(time2));
+                        return time3 =(parseInt((time2 - time1)/3600/24));
+                    }
+                    for (var i in endtimeList) {
+                        timevalue.push({
+                            label:endtimeList[i],
+                            value:endtimeList[i]
+                        })
+                    }
+                    $('.ma_expect_date_picker .weui-picker').on('animationend webkitAnimationEnd', function () {
+                        show_expect_time_picker(_this, result);
+                    });
+                },
+                id: 'ma_expect_date',
+                className: 'ma_expect_date_picker'
+            });
+        });
+
+        // -----------------------二级调用：时间
+        function show_expect_time_picker(_this, date) {
+            var date = date[0].label + date[1].label + date[2].label;
+            weui.picker(
+                timevalue, {
+                    onChange: function (result) {
+                    },
+                    onConfirm: function (result) {
+                        $('.time').html(date + result[0].label);
+                        $('.time').removeClass('text-no');
+                    }
+                });
+        }
+//        $('.choosetime').click(function (event) {
+//            var _this = this;
+//            weui.datePicker({
+//                start: new Date(),
+//                end: 2030,
+//                defaultValue: [new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()],
+//                onConfirm: function (result) {
+//                    //console.log(result)
+//                    var choosetime='';
+//                    for (var i in result) {
+//                        choosetime +=result[i].value;
+//                    }
+//                    $('.ma_expect_date_picker .weui-picker').on('animationend webkitAnimationEnd', function () {
+//                        show_expect_time_picker(_this, result);
+//                    });
+//                },
+//                id: 'ma_expect_date',
+//                className: 'ma_expect_date_picker'
+//            });
+//        });
+//
+////        if(choosetime== new Date() ){
+////            var timeList =["123","12312"];
+////        }else {
+////            var timeList ={$interval};
+////        }
+
+//        // -----------------------二级调用：时间
+//        function show_expect_time_picker(_this, date) {
+//            var date = date[0].label + date[1].label + date[2].label;
+//            weui.picker(
+//                timevalue, {
+//                    onChange: function (result) {
+//                    },
+//                    onConfirm: function (result) {
+//                        $('.time').html(date + result[0].label);
+//                        $('.time').removeClass('text-no');
+//                    }
+//                });
+//        }
+
+        $('.chooseaddress').click(function () {
+            $('.text-address').hide();
+        })
+
+
+    })
+</script>
+>>>>>>> 9c781cc2cf65170209d1936be01b7acac8aa5bb9
+</html>

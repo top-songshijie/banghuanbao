@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <title>有奖分享</title>
+    <style>
+        .bgc {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            -webkit-background-size: cover;
+            background-attachment: fixed;
+        }
+        .btn_boxs{
+            width:100%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom:27%;
+        }
+        .btn_item{
+            display: block;
+            text-decoration: none;
+            background-color: #fff;
+            margin: 0.1rem;
+            border-radius: 0.1rem;
+            padding:0.3rem 0.2rem;
+            font-size:0.36rem;
+            color:#61B62F;
+        }
+        .btn_item:active{
+            opacity: 0.7;
+            text-decoration: none;
+        }
+        .btn_box{
+            display: flex;
+        }
+        .share{
+            width: 100%;
+            position: absolute;
+            z-index: 999;
+            display: none;
+        }
+    </style>
+</head>
+<body >
+<div class="bgc" style="background-image: url('__TMPL__/public/assets/imgs/fbg@2x.png')">
+    <div class="btn_boxs">
+        <div class="btn_box" style="z-index: 10;position:absolute;">
+            <a class="btn_item" href="javascript:;">分享到朋友圈</a>
+            <a class="btn_item" href="javascript:;">分享到微信群</a>
+        </div>
+    </div>
+    <img class="share" src="__TMPL__/public/assets/imgs/share.png">
+</div>
+
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    wx.config({
+        debug: false,
+        appId: "{$signPackage['appId']}",
+        timestamp: "{$signPackage['timestamp']}",
+        nonceStr: "{$signPackage['nonceStr']}",
+        signature: "{$signPackage['signature']}",
+        jsApiList: [
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+        ]
+    });
+    wx.ready(function () {
+        var shareData = {
+            title: "关注公众号，消费有返利",
+            desc: "帮换宝为您提供最优质的垃圾回收服务以及最优质的商品信息",
+            link: "http://banghuanbao.w.bronet.cn/Portal/Share/sharepage/user_id/"+{$user_id},
+            imgUrl: "http://banghuanbao.w.bronet.cn/themes/simpleboot3/public/assets/imgs/ficon01@2x.png",
+//            trigger: function (res) {
+//                 alert('用户点击发送给朋友');
+//            },
+            success: function (res) {
+                $('.share').hide();
+            },
+            cancel: function (res) {
+                $('.share').hide();
+            }
+        }
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+    });
+
+    //分享遮罩层
+    $('.btn_item').click(function () {
+        $('.share').show();
+    })
+</script>
+</html>

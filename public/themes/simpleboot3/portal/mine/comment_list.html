@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_x9ptzbua4rr.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>评价</title>
+    <style>
+        body{
+            padding: 0 0 1.1rem 0;
+        }
+    </style>
+</head>
+<body>
+<div class="assess">
+    <volist name="list" id="vo">
+    <div class="assess_item">
+        <div class="assess_item_left">
+            <img src="{$vo.avatar}" alt="">
+        </div>
+        <div class="assess_item_right">
+            <div class="assess_tetle">
+                <div>{$vo.user_nickname}</div>
+                <div class="assess_time">{$vo.c_create_time}</div>
+            </div>
+            <div class="star_box">
+                <div class="iconfont icon-shoucang1 <php>if($vo['score']>0){echo 'avitity';}</php>"></div>
+                <div class="iconfont icon-shoucang1 <php>if($vo['score']>1){echo 'avitity';}</php>"></div>
+                <div class="iconfont icon-shoucang1 <php>if($vo['score']>2){echo 'avitity';}</php>"></div>
+                <div class="iconfont icon-shoucang1 <php>if($vo['score']>3){echo 'avitity';}</php>"></div>
+                <div class="iconfont icon-shoucang1  <php>if($vo['score']>4){echo 'avitity';}</php>"></div>
+            </div>
+            <div class="assess_content">
+                {$vo.content}
+            </div>
+
+        </div>
+    </div>
+    </volist>
+</div>
+
+<div class="bottom">
+    <a class="bottom_item" href="{:url('Rubbish/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav01@2x.png" alt="">
+        </div>
+        <div>首页</div>
+    </a>
+    <a class="bottom_item" href="{:url('Shop/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav03@2x.png" alt="">
+
+        </div>
+        <div>换宝商城</div>
+    </a>
+    <a class="bottom_item avitity" href="{:url('Mine/comment_list')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav06@2x.png" alt="">
+
+        </div>
+        <div>评价</div>
+    </a>
+    <a class="bottom_item" href="{:url('Mine/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav07@2x.png" alt="">
+        </div>
+        <div>我的</div>
+    </a>
+</div>
+
+</body>
+</html>

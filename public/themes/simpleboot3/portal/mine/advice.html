@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_s2v4ig7y3k9.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>投诉建议</title>
+    <style>
+        body{
+            overflow-x: hidden;
+        }
+        textarea{
+            margin: 0.32rem;
+            background-color: #fff;
+            border-radius: 0.1rem;
+            min-height: 3.6rem;
+            width:84%;
+            padding:0.32rem;
+            border:none;
+            font-size:0.28rem;
+
+        }
+        textarea::placeholder{
+            color:#ccc;
+            font-size:0.28rem;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <textarea  placeholder="请输入您的投诉建议" class='txtval'></textarea>
+</div>
+<a class=" btn add_address_btn" >保存</a>
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type='text/javascript' src='__TMPL__/public/assets/js/common.js'></script>
+<script type='text/javascript'>
+    $(function(){
+        $('.add_address_btn').click(function(){
+            var txtval=$('.txtval').val();
+            if(txtval==''){
+                toast('请填写投诉建议')
+            }else{
+                $.ajax({
+                    type:"POST",
+                    url:"{:url('Mine/advice')}",
+                    data:{
+                        "content":txtval,
+                    },
+                    success:function (data) {
+                        if(data.code == 1){
+                            toast('感谢您的宝贵意见')
+                            setTimeout(function () {
+                                location.href = "{:url('Mine/index')}";
+                            }, 2000 )
+                        }
+                    }
+                })
+            }
+        })
+    })
+
+</script>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_4o1ypewi9yd.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <title>全部分类</title>
+    <style>
+        body{
+            padding:1rem 0 1.1rem 0;
+        }
+        .bottom_nav{
+            box-shadow: 0  -3px 20px #ececec;
+        }
+        .swiper-container-horizontal > .swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction {
+            bottom: -5px;
+        }
+
+        .swiper-container {
+            height: 3.6rem;
+        }
+
+        .swiper-pagination-bullet {
+            width: 6px;
+            height: 6px;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #5D910B;
+        }
+    </style>
+    <style>
+        #topNav {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            font: 16px/32px hiragino sans gb, microsoft yahei, simsun;
+            border-bottom:1px solid #f8f8f8;
+        }
+        #topNav .swiper-slide {
+            padding: 0 5px;
+            letter-spacing:2px;
+            width: 1.5rem !important;
+            text-align:center;
+            position: relative;
+            display: inline-block;
+        }
+        #topNav .swiper-slide span{
+
+            transition:all .3s ease;
+            display:block;
+        }
+        #topNav .swiper-slide.active:after {
+            content: " ";
+            height: 2px;
+            position: absolute;
+            background: #000;
+            bottom: 0;
+            width: 60%;
+            left: 20%;
+        }
+        a{
+            color:#999;
+        }
+        a:active{
+            color:#999;
+        }
+    </style>
+</head>
+<body>
+
+<div  id="topNav" class="swiper-container hb_top market_classify_top">
+    <div class="swiper-wrapper">
+        <volist name="cate_list" id="vo" k="key">
+            <div class="swiper-slide hb_topitem" data-id="{$vo.id}">
+                <a href="{:url('Shop/all_cate',array('cate_id'=>$vo['id']))}"><span>{$vo.cate_name}</span></a>
+            </div>
+        </volist>
+
+    </div>
+</div>
+<!--全部商品-->
+<div class="market_nav">
+    <div class="tab_box">
+        <div class="goodsbox tab">
+            <volist name="goods_list" id="vo">
+                <a class="goods" href="{:url('Shop/goods_detail',array('id'=>$vo['id']))}">
+                    <div class="goods_img">
+                        <img src="{$vo.goods_thumb}" alt="">
+                    </div>
+                    <div class="goods_txtbox">
+                        <div>{$vo.goods_name}</div>
+                        <if condition="$vo.if_only_exchange eq 1">
+                            <div > <span class="hprice">{$vo.low_price}环保币</span></div>
+                            <else />
+                            <div > <span class="hprice">￥{$vo.low_price}</span> <span class="yprice">￥{$vo.goods_ago_price}</span></div>
+                        </if>
+                    </div>
+                </a>
+            </volist>
+        </div>
+    </div>
+</div>
+
+<div class="bottom bottom_nav">
+    <a class="bottom_item" href="{:url('Shop/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav01@2x.png" alt="">
+        </div>
+        <div>首页</div>
+    </a>
+    <a class="bottom_item avitity" href="{:url('Shop/all_cate')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav10@2x.png" alt="">
+        </div>
+        <div>分类</div>
+    </a>
+    <a class="bottom_item" href="{:url('Shop/car')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav11@2x.png" alt="">
+
+        </div>
+        <div>购物车</div>
+    </a>
+    <a class="bottom_item" href="{:url('Mine/index')}">
+        <div class="bottom_img">
+            <img src="__TMPL__/public/assets/imgs/nav07@2x.png" alt="">
+        </div>
+        <div>我的</div>
+    </a>
+</div>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/swiper-3.4.2.jquery.min.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script>
+    var cate_id = {$cate_id};
+    console.log(cate_id)
+    $('.hb_topitem').each(function () {
+        if($(this).attr('data-id')==cate_id){
+            $(this).addClass('activity_hb')
+        }
+    })
+
+</script>
+<script>
+    var mySwiper = new Swiper('#topNav', {
+        freeMode: true,
+        freeModeMomentumRatio: 0.5,
+        slidesPerView: 'auto',
+//        loop:true,
+        slideToClickedSlide:true,
+        observer:true,
+        observeParents:true,
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/weui.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_715395_q3qobbf7i6b.css">
+    <script type="text/javascript" src="__TMPL__/public/assets/js/base.js"></script>
+    <link rel="stylesheet" href="__TMPL__/public/assets/css/style.css">
+    <link rel="stylesheet" href="__TMPL__/public/assets/common/common.css">
+    <title>选择地址</title>
+    <style>
+        body{
+            padding:0 0 1rem 0;
+        }
+    </style>
+</head>
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content">已完成</p>
+    </div>
+</div>
+<body>
+<div class="choose_addressitembox">
+    <volist name="list" id="vo">
+    <div class="choose_addressitem" data-id="{$vo.id}">
+        <if condition="$type eq 'car'">
+            <a class="choose_top" href="{:url('goodsorder/order_detail',array('address_id'=>$vo['id']))}">
+        <elseif condition="$type eq 'shop'" />
+            <a class="choose_top" href="{:url('goodsorder/shop_order_detail',array('address_id'=>$vo['id']))}">
+        <else />
+            <a class="choose_top" href="javascript:;">
+        </if>
+            <div class="choose_top_left">
+                <div class="iconfont icon-location"></div>
+            </div>
+            <div class="choose_top_right">
+                <div>{$vo.village}  {$vo.detail_address}</div>
+                <div class="choose_name"> <span class="name">{$vo.name}</span><span>{$vo.mobile}</span> </div>
+            </div>
+        </a>
+
+        <div class="choose_b" data-id="{$vo.id}">
+            <div class="choose_b_left">
+                <if condition="$vo.is_default eq 1">
+                        <div class="choose_pint activity_roll">
+                    <else />
+                        <div class="choose_pint" data-id="{$vo.id}">
+                </if>
+                    <i class="iconfont icon-bianjiICONCopy-"></i>
+                </div>
+                <div>默认地址</div>
+            </div>
+            <div class="choose_b_right" >
+                <a class="flex-c edit_box" href="{:url('goodsorder/edit_address',array('user_address_id'=>$vo['id']))}">
+                    <i class="iconfont icon-qianming"></i>
+                    <div>编辑</div>
+                </a>
+                <div class="flex-c delete_box" delete-index="{$vo.id}">
+                    <i class="iconfont icon-shanchu"></i>
+                    <div>删除</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </volist>
+    <a class="comfirm_btn" href="{:url('goodsorder/add_address')}">新增收货地址</a>
+    <div class="delete_mold" style="display: none">
+        <div class="delete">
+            <div class="iconfont icon-delete2"></div>
+            <div class="delete_title">删除地址</div>
+            <div class="if_delete">您确认要删除该地址吗？</div>
+            <div class="delete_btn" delete-index=''>确认删除</div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="__TMPL__/public/assets/js/jquery-2.1.0.js"></script>
+<script src="__TMPL__/public/assets/js/weui.min.js"></script>
+<script src="__TMPL__/public/assets/js/common.js"> </script>
+<script type="text/javascript">
+    $('.delete_box').click(function () {
+        $('.delete_mold').show()
+    })
+    $('.icon-delete2').click(function () {
+        $('.delete_mold').hide()
+    })
+    $('.delete_mold').click(function () {
+        $('.delete_mold').hide()
+    })
+    $('.delete').click(function (e) {
+        e.stopPropagation();
+    })
+    $('.choose_pint').click(function () {
+        var shazi = $(this);
+        var id = shazi.data('id');
+        $.ajax({
+            type:"POST",
+            url:"{:url('Goodsorder/set_default_address')}",
+            data:{
+                "user_addrsss_id":id,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    $('.choose_pint').each(function () {
+                        $(this).removeClass('activity_roll');
+                    })
+                    shazi.addClass('activity_roll');
+                }
+            }
+        })
+
+    })
+    $('.choose_b').click(function(e){
+        e.stopPropagation();
+    })
+    $('.delete_box').click(function(){
+        var index = $(this).attr('delete-index')
+        $('.delete_btn').attr('delete-index',index);
+        $('.delete_mold').show();
+    })
+    $('.delete_btn').click(function(){
+        var del_index = $('.delete_btn').attr('delete-index');
+        $.ajax({
+            type:"POST",
+            url:"{:url('Goodsorder/del_address')}",
+            data:{
+                "id":del_index,
+            },
+            success:function (data) {
+                if(data.code == 1){
+                    $('.choose_addressitem').each(function(){
+                        if($(this).attr('data-id') == del_index){
+                            $('.delete_mold').hide();
+                            $(this).remove();
+                            return flase;
+                        }
+                    })
+                }else{
+                    $('.delete_mold').hide();
+                    toast(data.msg)
+                }
+            }
+        })
+
+    })
+</script>
+</html>
